@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des compétitions{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Liste des compétitions</h1>
+
+        {% for message in app.flashes('success') %}
+          <div class="alert alert-success mt-4">
+            {{message}}
+          </div> 
+        {% endfor %}
+        
+        <table class="table table-dark table-striped ">
+            <thead>
+              <tr>
+                <th class="text-center" scope="col"></th>
+                <th class="text-center" scope="col"></th>                 
+                <th class="text-center" scope="col"></th>              
+                <th class="text-center" scope="col" colspan="2">Compétition</th>
+                <th class="text-center" scope="col" colspan="2">Inscription</th>
+              </tr>
+              <tr>
+                <th class="text-center" scope="col">Désignation</th>
+                <th class="text-center" scope="col">Type</th>
+                <th class="text-center" scope="col">Lieu</th>
+                <th class="text-center" scope="col">Début</th>
+                <th class="text-center" scope="col">Fin</th>
+                <th class="text-center" scope="col">Début</th>
+                <th class="text-center" scope="col">Fin</th>
+                {% if is_granted('ROLE_COMPETITOR') %}
+                  <th class="text-center" scope="col">Actions</th>
+                {% endif %}
+              </tr>
+
+            </thead>
+            <tbody>      
+              {% for compet in competition_list %}
+                <tr class='table-primary'>
+                  <th scope="row">{{ compet.name }}</td>
+	                <td>
+                      {{ compet.competitionName.type }}       
+                  </td> 
+                  <td>{{ compet.location }}</td>
+                  <td>{{ compet.startDate|date('d-m-Y') }}</td>
+                  <td>{{ compet.endDate|date('d-m-Y') }}</td>
+                  <td>{{ compet.startRegistration|date('d-m-Y') }}</td>
+                  <td>{{ compet.endRegistration|date('d-m-Y') }}</td>
+                  <td>                  
+                    {% if is_granted('ROLE_COMPETITOR') %}   
+                      <a href='{{ path('competitors.new', { id: compet.id}) }}' class= 'btn btn-success'>Inscription</a>   
+                    {% endif %}
+                   </td>        
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    </div>       
+    <div>          
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+      {% else %}
+      <h6 class="container mt-4">
+        <p class="fw-bold">Veuillez-vous connecter pour vous inscrire</p>
+      </h6>       
+    {% endif %}     
+    {% if is_granted('ROLE_ADMIN') %} 
+      <div class="container mt-4">  
+        <a href ="{{ path('admin.competitions.list') }}" class="btn btn-primary">
+            Gestion des competitions
+        </a>
+      </div>
+    {% endif %}
+  {% endblock %}

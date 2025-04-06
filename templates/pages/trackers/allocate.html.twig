@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class 'container mt-4'>
+    <h2 class= "mx-auto" style="width: 400px">Attribuer un tracker </h2>
+
+    {% for message in app.flashes('success') %}
+      <div class="alert alert-success mt-4">
+        {{ message }}
+      </div>   
+    {% endfor %}  
+
+    <div class="mx-auto" style="width: 400px;">
+      {{ form_start(form) }}
+        <div class="form-group" mt-4>
+          <h5>
+            Nom : <b>{{ Name }}</b>
+          </h5>
+        </div>
+
+        <div class="form-group">
+          {{ form_label(form.pilote) }}
+          {{ form_widget(form.pilote) }}
+          <div class='form-error'>
+            {{ form_errors(form.pilote) }}
+        </div>
+  
+        <div class="form-group">
+          {{ form_label(form.immat) }}
+          {{ form_widget(form.immat) }}
+          <div class='form-error'>
+            {{ form_errors(form.immat) }}
+        </div>
+  
+  			{{ form_row(form._token) }}
+  
+        <div class="form-group">
+          {{ form_row(form.submit) }}
+        </div>
+
+    {{ form_end(form) }}   
+    </div>
+  </div
+{% endblock %}

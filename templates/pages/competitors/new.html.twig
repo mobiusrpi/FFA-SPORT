@@ -1,0 +1,215 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class 'container mt-4'>
+    <h2 class="mx-auto" style="width: 400px">Ajout competiteur</h2>
+    {% for message in app.flashes('success') %}
+      <div class="alert alert-success mt-4">
+        {{ message }}
+      </div>
+    {% endfor %}
+    {{ form_start(competitor_new) }}         
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-5 fw-bold">
+                <h4 mt-4>PILOTE</h4>                              
+            </div>
+            <div class="col-1"></div>           
+            <div class="col-4">
+                <h4>NAVIGATEUR</h4>                                
+            </div>
+            <div class="col-1"></div>
+        </div>      
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                {{ form_label(competitor_new.pilotLastname) }}                               
+                {{ form_widget(competitor_new.pilotLastname) }}
+                <div class='form-error'>                             
+                    {{ form_errors(competitor_new.pilotLastname) }}                               
+                </div>
+            </div>
+            <div class="col-1"></div>           
+            <div class="col-4">
+                {{ form_label(competitor_new.navigatorLastname) }}                               
+                {{ form_widget(competitor_new.navigatorLastname) }}  
+                <div class='form-error'>                             
+                    {{ form_errors(competitor_new.navigatorLastname) }}                               
+                </div>                               
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                {{ form_label(competitor_new.pilotFirstname) }}                               
+                {{ form_widget(competitor_new.pilotFirstname) }}  
+                <div class='form-error'>                             
+                    {{ form_errors(competitor_new.pilotFirstname) }}                               
+                </div>                                                                
+            </div>
+            <div class="col-1"></div>
+            <div class="col-4"> 
+                {{ form_label(competitor_new.navigatorFirstname) }}                               
+                {{ form_widget(competitor_new.navigatorFirstname) }}  
+                <div class='form-error'>                             
+                    {{ form_errors(competitor_new.navigatorFirstname) }}                               
+                </div>                                                                
+            </div>
+            <div class="col-1"></div>
+		</div>
+       <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                {{ form_label(competitor_new.pilotPhone) }}                               
+                {{ form_widget(competitor_new.pilotPhone) }}
+                <div class='form-error'>                             
+                    {{ form_errors(competitor_new.pilotPhone) }}                               
+                </div>
+            </div>
+            <div class="col-1"></div>           
+            <div class="col-4">
+                {{ form_label(competitor_new.navigatorPhone) }}                               
+                {{ form_widget(competitor_new.navigatorPhone) }}  
+                <div class='form-error'>                             
+                    {{ form_errors(competitor_new.navigatorPhone) }}                               
+                </div>                               
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+               {{ form_label(competitor_new.pilotEmail) }}                               
+                {{ form_widget(competitor_new.pilotEmail) }}
+                <div class='form-error'>                             
+                    {{ form_errors(competitor_new.pilotEmail) }}                               
+                </div>
+            </div>
+            <div class="col-1"></div>           
+            <div class="col-4">
+                {{ form_label(competitor_new.navigatorEmail) }}                               
+                {{ form_widget(competitor_new.navigatorEmail) }}  
+                <div class='form-error'>                             
+                    {{ form_errors(competitor_new.navigatorEmail) }}                               
+                </div>    
+            </div>                                                       
+            <div class="col-1"></div>
+		</div>      
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                {{ form_row(competitor_new.pilotBirthdate) }}                                 
+            </div>
+            <div class="col-1"></div>
+            <div class="col-4"> 
+                {{ form_row(competitor_new.navigatorBirthdate) }}                  
+            </div>
+            <div class="col-1"></div>
+		</div>      
+       <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                {{ form_row(competitor_new.pilotFlyingclub) }}                                 
+            </div>
+            <div class="col-1"></div>
+            <div class="col-4"> 
+                {{ form_row(competitor_new.navigatorFlyingclub) }}                  
+            </div>
+            <div class="col-1"></div>
+		</div>      
+       <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                {{ form_row(competitor_new.pilotCommittee) }}                                 
+            </div>
+            <div class="col-1"></div>
+            <div class="col-4"> 
+                {{ form_row(competitor_new.navigatorCommittee) }}                  
+            </div>
+            <div class="col-1"></div>
+		</div>      
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                {{ form_row(competitor_new.pilotGender) }}                                 
+            </div>
+            <div class="col-1"></div>
+            <div class="col-4"> 
+                {{ form_row(competitor_new.navigatorGender) }}                  
+            </div>
+            <div class="col-1"></div>
+		</div>      
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                {{ form_row(competitor_new.pilotPolosize) }}                                 
+            </div>
+            <div class="col-1"></div>
+            <div class="col-4"> 
+                {{ form_row(competitor_new.navigatorPolosize) }}                  
+            </div>
+            <div class="col-1"></div>
+		</div>      
+       <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                {{ form_row(competitor_new.category) }}                                 
+            </div>
+            <div class="col-3"></div>
+		</div>      
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                {{ form_row(competitor_new.callsign) }}                                 
+            </div>
+            <div class="col-3"></div>
+		</div>  
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                {{ form_row(competitor_new.aircraftType) }}                                 
+            </div>
+            <div class="col-3"></div>
+		</div>  
+       <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                {{ form_row(competitor_new.aircraftSpeed) }}                                 
+            </div>
+            <div class="col-3"></div>
+		</div>  
+       <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                {{ form_row(competitor_new.aircraftFlyingclub) }}                                 
+            </div>
+            <div class="col-3"></div>
+		</div>  
+       <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                {{ form_row(competitor_new.aircraftSharing) }}                                 
+            </div>
+            <div class="col-3"></div>
+		</div>  
+       <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                {{ form_row(competitor_new.pilotShared) }}                                 
+            </div>
+            <div class="col-3"></div>
+		</div>  
+       <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                {{ form_row(competitor_new.payment) }}                                 
+            </div>
+            <div class="col-3"></div>
+		</div>  
+        <div class="form-group">
+          {{ form_row(competitor_new.submit) }}
+        </div>
+      {{ form_end(competitor_new) }} 
+  </div 
+{% endblock %}
