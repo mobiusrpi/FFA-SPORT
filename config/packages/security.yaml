@@ -9,6 +9,7 @@ security:
             entity:
                 class: App\Entity\Users
                 property: email
+        # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -24,6 +25,16 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
+                # where to redirect after logout
+                # target: app_any_route
+            
+            # by default, the feature allows 5 login attempts per minute
+            login_throttling: null
+
+            # configure the maximum login attempts
+            login_throttling:
+                max_attempts: 3          # per minute ...
+                interval: '15 minutes' # ... or in a custom period
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
