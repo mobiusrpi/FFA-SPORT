@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Compétitions</h1>
+        <h3><strong>Compétitions - Admin</strong></h3>
 
         {% for message in app.flashes('success') %}
           <div class="alert alert-success mt-4">
@@ -15,12 +15,22 @@
         <table class="table table-dark">
             <thead>
                 <tr>
-                  <th class="text-center" scope="col">Compétition</th>
-                  <th class="text-center" scope="col">Type</th>  
-                  <th class="text-center" scope="col">Lieu</th>                  
-                  <th class="text-center" scope="col">Début</th>
-                  <th class="text-center" scope="col">Fin</th>
-                  <th class="text-center" scope="col">Actions</th>
+                  <th class="text-center" scope="col"></th>
+                  <th class="text-center" scope="col"></th>                 
+                  <th class="text-center" scope="col"></th>              
+                  <th class="text-center" scope="col" colspan="2">Compétition</th>
+                  <th class="text-center" scope="col" colspan="2">Inscription</th>               
+                  <th></th>
+                </tr>
+                <tr>
+                  <th class="text-center col-md-3" scope="col">Compétition</th>
+                  <th class="text-center col-md-2" scope="col">Type</th>  
+                  <th class="text-center col-md-2" scope="col">Lieu</th>                  
+                  <th class="text-center col-md-1" scope="col">Début</th>
+                  <th class="text-center col-md-1" scope="col">Fin</th>
+                  <th class="text-center col-md-1" scope="col">Début</th>
+                  <th class="text-center col-md-1" scope="col">Fin</th>
+                  <th class="text-center col-md-1" scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>      
@@ -28,25 +38,25 @@
                 <tr class='table-primary'>
                   <th scope="row">{{ compet.name }}</td>
 	                <td>
-                      {{ compet.competitionName.type }}       
+                      {{ compet.type }}       
                   </td> 
                   <td>{{ compet.location }}</td>
                   <td>{{ compet.startDate|date('d-m-Y') }}</td>
                   <td>{{ compet.endDate|date('d-m-Y') }}</td>
-                  <td>           
-                    <a href='{{ path('admin.competitions.delete', { id: compet.id}) }}' class= 'btn btn-danger'>Supprimer</a>               
-                    <a href='{{ path('admin.competitions.edit', { id: compet.id}) }}' class= 'btn btn-success'>Editer</a>   
+                  <td>{{ compet.startRegistration|date('d-m-Y') }}</td>
+                  <td>{{ compet.endRegistration|date('d-m-Y') }}</td>
+                  <td class="text-center">           
+                    <a href='{{ path('admin.competitions.edit', { id: compet.id}) }}' class= 'btn btn-success btn'>Editer</a>   
+                    <a href='{{ path('admin.competitions.delete', { id: compet.id}) }}' class= 'btn btn-danger btn-sm'>Supprimer</a>               
                    </td>        
                 </tr>
               {% endfor %}
             </tbody>
         </table>
     </div>            
-    {% if is_granted('ROLE_ADMIN') %}   
-      <div class="container mt-4">         
-      <a href ="{{ path('admin.competitions.new') }}" class="btn btn-primary">
-            Nouvelle compétition
-        </a>      
-      </div>
-    {% endif %}
+    <div class="container mt-4">         
+    <a href ="{{ path('admin.competitions.new') }}" class="btn btn-primary">
+        Nouvelle compétition
+      </a>      
+    </div>
 {% endblock %}

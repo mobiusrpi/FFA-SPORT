@@ -15,25 +15,27 @@
         </li>
         <li class="nav-item">
            <a class="nav-link {% if app.request.attributes.get('_route') == 'home' %}active{% endif %}" 
-            href="{{ path('home') }}">
+            href="{{ path('competitions.list') }}">
               Compétitions
           </a>        
         </li>
-        {% if is_granted('ROLE_ADMIN') %}
-        <li class="nav-item">
-          <a class="nav-link {% if app.request.attributes.get('_route') == 'home' %}active{% endif %}" 
-            href="{{ path('home') }}">
-            Trackers
-          </a>
-        </li>
-        {% endif %}
-        {% if is_granted('ROLE_ADMIN') %}
-        <li class="nav-item">
-          <a class="nav-link {% if app.request.attributes.get('_route') == 'user.list' %}active{% endif %}" 
-            href="{{ path('home') }}">
+         <div class="dropdown">
+          <a class="btn btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
             Admin
           </a>
-        </li>
+          <ul class="dropdown-menu nav-item" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">Utilisateurs</a></li>
+            <li><a class="dropdown-item" href="#">Competitions</a></li>
+          </ul>
+        </div>
+
+        {% if is_granted('ROLE_ADMIN') %}        
+          <li class="nav-item">
+            <a class="nav-link {% if app.request.attributes.get('_route') == 'user.list' %}active{% endif %}" 
+              href="{{ path('home') }}">
+              Admin
+            </a>
+          </li>
         {% endif %}
       </ul>        
       <form class="d-flex">

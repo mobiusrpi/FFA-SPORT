@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Liste des compétitions</h1>
+        <h3><strong>Liste des compétitions</strong></h3>
 
         {% for message in app.flashes('success') %}
           <div class="alert alert-success mt-4">
@@ -19,18 +19,21 @@
                 <th class="text-center" scope="col"></th>                 
                 <th class="text-center" scope="col"></th>              
                 <th class="text-center" scope="col" colspan="2">Compétition</th>
-                <th class="text-center" scope="col" colspan="2">Inscription</th>
+                <th class="text-center" scope="col" colspan="2">Inscription</th>                
+                {% if is_granted('ROLE_USER') %}
+                  <th class="text-center"></th>
+                {% endif %}
               </tr>
               <tr>
-                <th class="text-center" scope="col">Désignation</th>
-                <th class="text-center" scope="col">Type</th>
-                <th class="text-center" scope="col">Lieu</th>
-                <th class="text-center" scope="col">Début</th>
-                <th class="text-center" scope="col">Fin</th>
-                <th class="text-center" scope="col">Début</th>
-                <th class="text-center" scope="col">Fin</th>
-                {% if is_granted('ROLE_COMPETITOR') %}
-                  <th class="text-center" scope="col">Actions</th>
+                <th class="text-center col-md-3" scope="col">Désignation</th>
+                <th class="text-center col-md-2" scope="col">Type</th>
+                <th class="text-center col-md-2" scope="col">Lieu</th>
+                <th class="text-center col-md-1" scope="col">Début</th>
+                <th class="text-center col-md-1" scope="col">Fin</th>
+                <th class="text-center col-md-1" scope="col">Début</th>
+                <th class="text-center col-md-1" scope="col">Fin</th>
+                {% if is_granted('ROLE_USER') %}
+                  <th class="text-center col-md-1" scope="col">Actions</th>
                 {% endif %}
               </tr>
 
@@ -39,19 +42,17 @@
               {% for compet in competition_list %}
                 <tr class='table-primary'>
                   <th scope="row">{{ compet.name }}</td>
-	                <td>
-                      {{ compet.competitionName.type }}       
-                  </td> 
+	                <td>{{ compet.type }}</td> 
                   <td>{{ compet.location }}</td>
-                  <td>{{ compet.startDate|date('d-m-Y') }}</td>
-                  <td>{{ compet.endDate|date('d-m-Y') }}</td>
-                  <td>{{ compet.startRegistration|date('d-m-Y') }}</td>
-                  <td>{{ compet.endRegistration|date('d-m-Y') }}</td>
-                  <td>                  
-                    {% if is_granted('ROLE_COMPETITOR') %}   
-                      <a href='{{ path('competitors.new', { id: compet.id}) }}' class= 'btn btn-success'>Inscription</a>   
-                    {% endif %}
-                   </td>        
+                  <td>{{ compet.startDate|date('d-m') }}</td>
+                  <td>{{ compet.endDate|date('d-m') }}</td>
+                  <td>{{ compet.startRegistration|date('d-m') }}</td>
+                  <td>{{ compet.endRegistration|date('d-m') }}</td>                
+                    {% if is_granted('ROLE_USER') %}   
+                      <td>       
+                        <a href='{{ path('admin.competitions.edit', { id: compet.id}) }}' class= 'btn btn-success btn-sm'>Inscription</a>   
+                      </td>  
+                    {% endif %}       
                 </tr>
               {% endfor %}
             </tbody>
