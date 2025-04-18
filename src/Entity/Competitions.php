@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CompetitionsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompetitionsRepository::class)]
@@ -15,9 +17,6 @@ class Competitions
 
     #[ORM\Column(length: 50)]
     private ?string $name = null;
-
-    #[ORM\Column(length: 20)]
-    private ?string $type = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $startDate = null;
@@ -37,6 +36,21 @@ class Competitions
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    /**
+     * @var Collection<int, crew>
+     */
+    #[ORM\ManyToMany(targetEntity: crew::class, inversedBy: 'competition')]
+    private Collection $crew;
+
+    #[ORM\ManyToOne(inversedBy: 'compettype')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TypeCompetition $typecomp = null;
+
+    public function __construct()
+    {
+        $this->crew = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -50,18 +64,6 @@ class Competitions
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): static
-    {
-        $this->type = $type;
 
         return $this;
     }
@@ -138,4 +140,39 @@ class Competitions
         return $this;
     }
 
+    /**
+     * @return Collection<int, crew>
+     */
+    public function getCrew(): Collection
+    {
+        return $this->crew;
+    }
+
+    public function addCrew(crew $crew): static
+    {
+        if (!$this->crew->contains($crew)) {
+            $this->crew->add($crew);
+        }
+
+        return $this;
+    }
+
+    public function removeCrew(crew $crew): static
+    {
+        $this->crew->removeElement($crew);
+
+        return $this;
+    }
+
+    public function getTypecomp(): ?TypeCompetition
+    {
+        return $this->typecomp;
+    }
+
+    public function setTypecomp(?TypeCompetition $typecomp): static
+    {
+        $this->typecomp = $typecomp;
+
+        return $this;
+    }
 }

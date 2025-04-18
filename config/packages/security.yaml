@@ -48,7 +48,7 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
     role_hierarchy:
-        ROLE_MANAGER: [ROLE_COMPETITOR]
+        ROLE_MANAGER: [ROLE_USER]
         ROLE_JUDGE: [ROLE_MANAGER]
         ROLE_ROUTEUR: [ROLE_JUDGE]
         ROLE_ADMIN: [ROLE_ROUTEUR]
