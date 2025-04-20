@@ -97,16 +97,16 @@ final class CompetitionsController extends AbstractController
     #[Route(path :'/competitions/registration/{id}', name: 'competitions.registration', methods:['GET','POST'])]
     public function registration(
         int $id,
-        Competitions $competitions, 
+        Competitions $competition, 
         Request $request,
-        ManagerRegistry $doctrine,
+        ManagerRegistry $doctrine,        
+        CompetitionsRepository $repository, 
     ) : Response{
 
-//        $crews = new Crews();  
         $entityManager = $doctrine->getManager('default');          
-        $repository = $entityManager->getRepository(Competitions::class);
-        $competition = $repository->findOneBy(['id' => $id]);
-        $form = $this->createForm(RegistrationType::class,$competitions);
+
+        $data = $repository->getQueryCompetitionData($id);
+        $form = $this->createForm(RegistrationType::class,$competition);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -124,7 +124,7 @@ final class CompetitionsController extends AbstractController
 
         return $this->render('pages/competitions/registration.html.twig', [
             'competition_reg' => $form->createView(),
-            'compet' => $competition
+            'data_compet' => $data
         ]);
     }
  

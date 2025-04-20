@@ -50,8 +50,8 @@ class Competitors
     #[ORM\JoinColumn(nullable: false)]
     private ?Positions $competitorPosition = null;
 
-    #[ORM\ManyToOne(inversedBy: 'crewCompetitor')]
-    private ?Crews $crewCompetitor = null;
+    #[ORM\ManyToOne(inversedBy: 'competitor')]
+    private ?Crews $crew = null;
 
     public function getId(): ?int
     {
@@ -190,14 +190,14 @@ class Competitors
         return $this;
     }
 
-    public function getCrewCompetitor(): ?Crews
+    public function getCrew(): ?Crews
     {
-        return $this->crewCompetitor;
+        return $this->crew;
     }
 
-    public function setCrewCompetitor(?Crews $crewCompetitor): static
+    public function setCrew(?Crews $crew): static
     {
-        $this->crewCompetitor = $crewCompetitor;
+        $this->crew = $crew;
 
         return $this;
     }

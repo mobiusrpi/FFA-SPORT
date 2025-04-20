@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Entity\Enum\Category;
 use App\Entity\Enum\SpeedList;
-use App\Repository\CrewsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CrewsRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CrewsRepository::class)]
 class Crews
@@ -41,7 +43,18 @@ class Crews
     private ?string $payment = null;
 
     #[ORM\ManyToOne(inversedBy: 'relationcrew')]
-    private ?Competitions $crew = null;
+    private ?Competitions $competition = null;
+
+     /**
+     * @var Collection<int, Competitors>
+     */
+    #[ORM\OneToMany(targetEntity: Competitors::class, mappedBy: 'crew')]
+    private Collection $competitor;
+
+    public function __construct()
+    {
+        $this->competitor = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -144,14 +157,44 @@ class Crews
         return $this;
     }
 
-    public function getCrew(): ?Competitions
+    public function getCompetition(): ?Competitions
     {
-        return $this->crew;
+        return $this->competition;
     }
 
-    public function setCrew(?Competitions $crew): static
+    public function setCompetition(?Competitions $competition): static
     {
-        $this->crew = $crew;
+        $this->competition = $competition;
+
+        return $this;
+    }
+
+     /**
+     * @return Collection<int, Competitors>
+     */
+    public function getCompetitor(): Collection
+    {
+        return $this->competitor;
+    }
+
+    public function addCompetitor(Competitors $competitor): static
+    {
+        if (!$this->competitor->contains($competitor)) {
+            $this->competitor->add($competitor);
+            $competitor->setCrew($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetitor(Competitors $competitor): static
+    {
+        if ($this->competitor->removeElement($competitor)) {
+            // set the owning side to null (unless already changed)
+            if ($competitor->getCrew() === $this) {
+                $competitor->setCrew(null);
+            }
+        }
 
         return $this;
     }

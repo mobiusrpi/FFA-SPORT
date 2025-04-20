@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class 'container mt-4'>
-      <h2 class= "mx-auto" style="width: 400px">Inscription </h2>
+      <h2 class= "mx-auto" style="width: 400px">Inscription</h2>
 
       {% for message in app.flashes('success') %}
         <div class="alert alert-success mt-4">
@@ -13,16 +13,18 @@
       {% endfor %}  
       <div class="">
  	      <div>
-          <p class= 'text-center'>Inscription pour la compétition de {{ compet.typecomp.type }} </br>
-          se déroulant à {{ compet.location }} du {{ compet.startDate|format_datetime(pattern='d MMMM Y') }} au {{compet.endDate|format_datetime(pattern='d MMMM Y') }}}}
+          <p class= 'text-center'>Inscription pour la compétition de {{ data_compet[0].typecomp }}</br>
+          se déroulant à {{ data_compet[0].location }} 
+          du {{ data_compet[0].startDate|format_datetime(locale='fr',pattern='dd MMMM y') }} 
+          au {{ data_compet[0].endDate|format_datetime(locale='fr',pattern='dd MMMM y') }}</p>
         </div>
         <div class="mx-auto" style="width: 400px;">
           {{ form_start(competition_reg) }}
             <div class="form-group">
-                {{ form_label(competition_reg.crews) }}
-                {{ form_widget(competition_reg.crews) }}
+                {{ form_label(competition_reg.relationCrew) }}
+                {{ form_widget(competition_reg.relationCrew) }}
                 <div class='form-error'>
-                    {{ form_errors(competition_reg.crews) }}            
+                    {{ form_errors(competition_reg.relationCrew) }}            
             </div>
                             
 		        {{ form_row(competition_reg._token) }}

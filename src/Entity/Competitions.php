@@ -36,14 +36,14 @@ class Competitions
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'relationType')]
+    #[ORM\ManyToOne(inversedBy: 'relationtype')]
     #[ORM\JoinColumn(nullable: false)]
     private ?TypeCompetition $typecompetition = null;
 
     /**
      * @var Collection<int, Crews>
      */
-    #[ORM\OneToMany(targetEntity: Crews::class, mappedBy: 'crew')]
+    #[ORM\OneToMany(targetEntity: Crews::class, mappedBy: 'competition')]
     private Collection $relationcrew;
 
     public function __construct()
@@ -128,7 +128,7 @@ class Competitions
 
         return $this;
     }
-
+ 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -165,7 +165,7 @@ class Competitions
     {
         if (!$this->relationcrew->contains($relationcrew)) {
             $this->relationcrew->add($relationcrew);
-            $relationcrew->setCrew($this);
+            $relationcrew->setCompetition($this);
         }
 
         return $this;
@@ -175,8 +175,8 @@ class Competitions
     {
         if ($this->relationcrew->removeElement($relationcrew)) {
             // set the owning side to null (unless already changed)
-            if ($relationcrew->getCrew() === $this) {
-                $relationcrew->setCrew(null);
+            if ($relationcrew->getCompetition() === $this) {
+                $relationcrew->setCompetition(null);
             }
         }
 

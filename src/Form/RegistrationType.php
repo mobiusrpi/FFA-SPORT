@@ -15,36 +15,36 @@ class RegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
   {
-    /**     $typeComp = $options['data'];          
-*        dd($typeComp);
-*        if ( $typeComp == 2 ){
+   /** *        if ( $typeComp == 2 ){
 *            $crewType = 'Pilote';                    
 *        }
 *        else {
 *            $crewType = 'Equipage';
 *        }       
 */        
-      $crewType = 'Pilote';  
-      $builder
-            ->add('crews', EntityType::class, [
-                'class' => crews::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-                'attr' => [
-                   'class' => 'form-label mt-4'
-                ],
-                'label' => $crewType,   
-                'placeholder' =>'Ajouter un concurrent'     
-             ])
-              ->add('submit', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary mt-4'
-                ],
-                'label' => 'Valider',           
-            ]);
-        ;
+    $crewType = 'Pilote'; 
+    
+//    dd($options);
+    $builder
+        ->add('relationCrew', EntityType::class, [
+            'class' => crews::class,
+            'choice_label' => 'callsign',
+            'multiple' => true,
+            'attr' => [
+            'class' => 'form-label mt-4'
+            ],
+            'label' => $crewType,   
+            'placeholder' =>'Ajouter un concurrent'     
+        ])
+        ->add('submit', SubmitType::class, [
+                    'attr' => [
+                        'class' => 'btn btn-primary mt-4'
+                    ],
+                    'label' => 'Valider',           
+                ]);
+            ;
     }
-
+ 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
