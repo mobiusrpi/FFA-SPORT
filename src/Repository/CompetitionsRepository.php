@@ -20,14 +20,14 @@ class CompetitionsRepository extends ServiceEntityRepository
      * @return CompetitionList[]
      */
     public function getQueryCompetitionSorted()
-    {
-        
-        return $this->createQueryBuilder('compet')
+    {    
+        return $this->createQueryBuilder('compet')                    
             ->orderBy('compet.startDate','ASC')
             ->getQuery()
             ->getResult()
         ;
     }
+
     //    /**
     //     * @return Competitions[] Returns an array of Competitions objects
     //     */

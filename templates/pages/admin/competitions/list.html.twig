@@ -12,25 +12,25 @@
           </div> 
         {% endfor %}
         
-        <table class="table table-dark">
+        <table class="table table-light w-auto">
             <thead>
                 <tr>
                   <th class="text-center" scope="col"></th>
                   <th class="text-center" scope="col"></th>                 
                   <th class="text-center" scope="col"></th>              
-                  <th class="text-center" scope="col" colspan="2">Compétition</th>
-                  <th class="text-center" scope="col" colspan="2">Inscription</th>               
+                  <th class="text-center" scope="col" colspan="2">Inscription</th>    
+                  <th class="text-center" scope="col" colspan="2">Compétition</th>           
                   <th></th>
                 </tr>
                 <tr>
-                  <th class="text-center col-md-3" scope="col">Compétition</th>
-                  <th class="text-center col-md-2" scope="col">Type</th>  
-                  <th class="text-center col-md-2" scope="col">Lieu</th>                  
-                  <th class="text-center col-md-1" scope="col">Début</th>
-                  <th class="text-center col-md-1" scope="col">Fin</th>
-                  <th class="text-center col-md-1" scope="col">Début</th>
-                  <th class="text-center col-md-1" scope="col">Fin</th>
-                  <th class="text-center col-md-1" scope="col">Actions</th>
+                  <th class="text-center col-2" scope="col">Compétition</th>
+                  <th class="text-center" scope="col">Type</th>  
+                  <th class="text-center" scope="col">Lieu</th>                  
+                  <th class="text-center" scope="col">Début</th>
+                  <th class="text-center" scope="col">Fin</th>
+                  <th class="text-center" scope="col">Début</th>
+                  <th class="text-center" scope="col">Fin</th>
+                  <th class="text-center col-2" scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>      
@@ -38,13 +38,13 @@
                 <tr class='table-primary'>
                   <th scope="row">{{ compet.name }}</td>
 	                <td>
-                      {{ compet.type }}       
+                      {{ compet.typecompetition.typecomp }}       
                   </td> 
                   <td>{{ compet.location }}</td>
-                  <td>{{ compet.startDate|date('d-m-Y') }}</td>
-                  <td>{{ compet.endDate|date('d-m-Y') }}</td>
-                  <td>{{ compet.startRegistration|date('d-m-Y') }}</td>
-                  <td>{{ compet.endRegistration|date('d-m-Y') }}</td>
+                  <td>{{ compet.startRegistration|format_datetime(locale='fr',pattern='dd MMMM') }}</td>
+                  <td>{{ compet.endRegistration|format_datetime(locale='fr',pattern='dd MMMM') }}</td>              
+                  <td>{{ compet.startDate|format_datetime(locale='fr',pattern='dd MMMM y') }}</td>
+                  <td>{{ compet.endDate|format_datetime(locale='fr',pattern='dd MMMM y') }}</td>
                   <td class="text-center">           
                     <a href='{{ path('admin.competitions.edit', { id: compet.id}) }}' class= 'btn btn-success btn'>Editer</a>   
                     <a href='{{ path('admin.competitions.delete', { id: compet.id}) }}' class= 'btn btn-danger btn-sm'>Supprimer</a>               

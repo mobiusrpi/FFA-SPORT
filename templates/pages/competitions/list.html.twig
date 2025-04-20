@@ -12,28 +12,28 @@
           </div> 
         {% endfor %}
         
-        <table class="table table-dark table-striped ">
+        <table class="table table-light table-striped w-auto">
             <thead>
               <tr>
                 <th class="text-center" scope="col"></th>
                 <th class="text-center" scope="col"></th>                 
                 <th class="text-center" scope="col"></th>              
-                <th class="text-center" scope="col" colspan="2">Compétition</th>
-                <th class="text-center" scope="col" colspan="2">Inscription</th>                
+                <th class="text-center" scope="col" colspan="2">Inscription</th> 
+                <th class="text-center" scope="col" colspan="2">Compétition</th>              
                 {% if is_granted('ROLE_USER') %}
                   <th class="text-center"></th>
                 {% endif %}
               </tr>
               <tr>
-                <th class="text-center col-md-3" scope="col">Désignation</th>
-                <th class="text-center col-md-2" scope="col">Type</th>
-                <th class="text-center col-md-2" scope="col">Lieu</th>
-                <th class="text-center col-md-1" scope="col">Début</th>
-                <th class="text-center col-md-1" scope="col">Fin</th>
-                <th class="text-center col-md-1" scope="col">Début</th>
-                <th class="text-center col-md-1" scope="col">Fin</th>
+                <th class="text-center" scope="col">Désignation</th>
+                <th class="text-center" scope="col">Type</th>
+                <th class="text-center" scope="col">Lieu</th>
+                <th class="text-center" scope="col">Début</th>
+                <th class="text-center" scope="col">Fin</th>                
+                <th class="text-center" scope="col">Début</th>
+                <th class="text-center" scope="col">Fin</th>
                 {% if is_granted('ROLE_USER') %}
-                  <th class="text-center col-md-1" scope="col">Actions</th>
+                  <th class="text-center" scope="col">Actions</th>
                 {% endif %}
               </tr>
 
@@ -42,15 +42,15 @@
               {% for compet in competition_list %}
                 <tr class='table-primary'>
                   <th scope="row">{{ compet.name }}</td>
-	                <td>{{ compet.type }}</td> 
+	                <td>{{ compet.typecompetition.typeComp }}</td> 
                   <td>{{ compet.location }}</td>
-                  <td>{{ compet.startDate|date('d-m') }}</td>
-                  <td>{{ compet.endDate|date('d-m') }}</td>
                   <td>{{ compet.startRegistration|date('d-m') }}</td>
-                  <td>{{ compet.endRegistration|date('d-m') }}</td>                
-                    {% if is_granted('ROLE_USER') %}   
+                  <td>{{ compet.endRegistration|date('d-m') }}</td>                   
+                  <td>{{ compet.startDate|format_datetime(locale='fr',pattern='dd MMMM') }}</td>
+                  <td>{{ compet.endDate|format_datetime(locale='fr',pattern='dd MMMM') }}</td>
+                  {% if is_granted('ROLE_USER') %}   
                       <td>       
-                        <a href='{{ path('admin.competitions.edit', { id: compet.id}) }}' class= 'btn btn-success btn-sm'>Inscription</a>   
+                        <a href='{{ path('competitions.registration', { id: compet.id}) }}' class= 'btn btn-success btn-sm'>Inscription</a>   
                       </td>  
                     {% endif %}       
                 </tr>

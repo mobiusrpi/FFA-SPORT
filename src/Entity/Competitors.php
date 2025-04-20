@@ -6,8 +6,6 @@ use App\Entity\Enum\CRAList;
 use App\Entity\Enum\Gender;
 use App\Entity\Enum\Polosize;
 use App\Repository\CompetitorsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompetitorsRepository::class)]
@@ -48,21 +46,12 @@ class Competitors
     #[ORM\Column(nullable: true, enumType: Polosize::class)]
     private ?Polosize $poloSize = null;
 
-    /**
-     * @var Collection<int, Crew>
-     */
-    #[ORM\ManyToMany(targetEntity: Crew::class, mappedBy: 'pilote')]
-    private Collection $crewPilot;
-
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Position $position = null;
+    private ?Positions $competitorPosition = null;
 
-    public function __construct()
-    {
-        $this->crewPilot = new ArrayCollection();
-
-    }
+    #[ORM\ManyToOne(inversedBy: 'crewCompetitor')]
+    private ?Crews $crewCompetitor = null;
 
     public function getId(): ?int
     {
@@ -189,41 +178,26 @@ class Competitors
         return $this;
     }
 
-    /**
-     * @return Collection<int, CrewPilot>
-     */
-    public function getCrewPilot(): Collection
+    public function getCompetitorPosition(): ?Positions
     {
-        return $this->crewPilot;
+        return $this->competitorPosition;
     }
 
-    public function addCrewPilot(Crew $crewPilot): static
+    public function setCompetitorPosition(?Positions $competitorPosition): static
     {
-        if (!$this->crewPilot->contains($crewPilot)) {
-            $this->crewPilot->add($crewPilot);
-            $crewPilot->addPilote($this);
-        }
+        $this->competitorPosition = $competitorPosition;
 
         return $this;
     }
 
-    public function removeCrewPilot(Crew $crewPilot): static
+    public function getCrewCompetitor(): ?Crews
     {
-        if ($this->crewPilot->removeElement($crewPilot)) {
-            $crewPilot->removePilote($this);
-        }
-
-        return $this;
+        return $this->crewCompetitor;
     }
 
-    public function getPosition(): ?Position
+    public function setCrewCompetitor(?Crews $crewCompetitor): static
     {
-        return $this->position;
-    }
-
-    public function setPosition(?Position $position): static
-    {
-        $this->position = $position;
+        $this->crewCompetitor = $crewCompetitor;
 
         return $this;
     }

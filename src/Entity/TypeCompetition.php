@@ -16,17 +16,17 @@ class TypeCompetition
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $type = null;
+    private ?string $typecomp = null;
 
     /**
      * @var Collection<int, Competitions>
      */
-    #[ORM\OneToMany(targetEntity: Competitions::class, mappedBy: 'typecomp')]
-    private Collection $compettype;
+    #[ORM\OneToMany(targetEntity: Competitions::class, mappedBy: 'typecompetition')]
+    private Collection $relationType;
 
     public function __construct()
     {
-        $this->compettype = new ArrayCollection();
+        $this->relationType = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -34,14 +34,14 @@ class TypeCompetition
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getTypecomp(): ?string
     {
-        return $this->type;
+        return $this->typecomp;
     }
 
-    public function setType(string $type): static
+    public function setTypecomp(string $typecomp): static
     {
-        $this->type = $type;
+        $this->typecomp = $typecomp;
 
         return $this;
     }
@@ -49,27 +49,27 @@ class TypeCompetition
     /**
      * @return Collection<int, Competitions>
      */
-    public function getCompettype(): Collection
+    public function getRelationType(): Collection
     {
-        return $this->compettype;
+        return $this->relationType;
     }
 
-    public function addCompettype(Competitions $compettype): static
+    public function addRelationType(Competitions $relationType): static
     {
-        if (!$this->compettype->contains($compettype)) {
-            $this->compettype->add($compettype);
-            $compettype->setTypecomp($this);
+        if (!$this->relationType->contains($relationType)) {
+            $this->relationType->add($relationType);
+            $relationType->setTypecompetition($this);
         }
 
         return $this;
     }
 
-    public function removeCompettype(Competitions $compettype): static
+    public function removeRelationType(Competitions $relationType): static
     {
-        if ($this->compettype->removeElement($compettype)) {
+        if ($this->relationType->removeElement($relationType)) {
             // set the owning side to null (unless already changed)
-            if ($compettype->getTypecomp() === $this) {
-                $compettype->setTypecomp(null);
+            if ($relationType->getTypecompetition() === $this) {
+                $relationType->setTypecompetition(null);
             }
         }
 

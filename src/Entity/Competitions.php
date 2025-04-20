@@ -36,19 +36,20 @@ class Competitions
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    /**
-     * @var Collection<int, crew>
-     */
-    #[ORM\ManyToMany(targetEntity: crew::class, inversedBy: 'competition')]
-    private Collection $crew;
-
-    #[ORM\ManyToOne(inversedBy: 'compettype')]
+    #[ORM\ManyToOne(inversedBy: 'relationType')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?TypeCompetition $typecomp = null;
+    private ?TypeCompetition $typecompetition = null;
+
+    /**
+     * @var Collection<int, Crews>
+     */
+    #[ORM\OneToMany(targetEntity: Crews::class, mappedBy: 'crew')]
+    private Collection $relationcrew;
 
     public function __construct()
     {
-        $this->crew = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->relationcrew = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,38 +141,44 @@ class Competitions
         return $this;
     }
 
-    /**
-     * @return Collection<int, crew>
-     */
-    public function getCrew(): Collection
+    public function getTypecompetition(): ?TypeCompetition
     {
-        return $this->crew;
+        return $this->typecompetition;
     }
 
-    public function addCrew(crew $crew): static
+    public function setTypecompetition(?TypeCompetition $typecompetition): static
     {
-        if (!$this->crew->contains($crew)) {
-            $this->crew->add($crew);
+        $this->typecompetition = $typecompetition;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Crews>
+     */
+    public function getRelationcrew(): Collection
+    {
+        return $this->relationcrew;
+    }
+
+    public function addRelationcrew(Crews $relationcrew): static
+    {
+        if (!$this->relationcrew->contains($relationcrew)) {
+            $this->relationcrew->add($relationcrew);
+            $relationcrew->setCrew($this);
         }
 
         return $this;
     }
 
-    public function removeCrew(crew $crew): static
+    public function removeRelationcrew(Crews $relationcrew): static
     {
-        $this->crew->removeElement($crew);
-
-        return $this;
-    }
-
-    public function getTypecomp(): ?TypeCompetition
-    {
-        return $this->typecomp;
-    }
-
-    public function setTypecomp(?TypeCompetition $typecomp): static
-    {
-        $this->typecomp = $typecomp;
+        if ($this->relationcrew->removeElement($relationcrew)) {
+            // set the owning side to null (unless already changed)
+            if ($relationcrew->getCrew() === $this) {
+                $relationcrew->setCrew(null);
+            }
+        }
 
         return $this;
     }

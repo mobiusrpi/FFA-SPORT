@@ -4,25 +4,17 @@ namespace App\Entity;
 
 use App\Entity\Enum\Category;
 use App\Entity\Enum\SpeedList;
-use App\Repository\CrewRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\CrewsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CrewRepository::class)]
-class Crew
+#[ORM\Entity(repositoryClass: CrewsRepository::class)]
+class Crews
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    /**
-     * @var Collection<int, Competitors>
-     */
-    #[ORM\ManyToMany(targetEntity: Competitors::class, inversedBy: 'crewPilot')]
-    private Collection $pilote;
 
     #[ORM\Column(enumType: Category::class)]
     private ?Category $category = null;
@@ -48,45 +40,12 @@ class Crew
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $payment = null;
 
-    /**
-     * @var Collection<int, Competitions>
-     */
-    #[ORM\ManyToMany(targetEntity: Competitions::class, mappedBy: 'crew')]
-    private Collection $competition;
-
-    public function __construct()
-    {
-        $this->pilote = new ArrayCollection();
-        $this->competition = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'relationcrew')]
+    private ?Competitions $crew = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection<int, Competitors>
-     */
-    public function getPilote(): Collection
-    {
-        return $this->pilote;
-    }
-
-    public function addPilote(Competitors $pilote): static
-    {
-        if (!$this->pilote->contains($pilote)) {
-            $this->pilote->add($pilote);
-        }
-
-        return $this;
-    }
-
-    public function removePilote(Competitors $pilote): static
-    {
-        $this->pilote->removeElement($pilote);
-
-        return $this;
     }
 
     public function getCategory(): ?Category
@@ -185,33 +144,16 @@ class Crew
         return $this;
     }
 
-    /**
-     * @return Collection<int, Competitions>
-     */
-    public function getCompetition(): Collection
+    public function getCrew(): ?Competitions
     {
-        return $this->competition;
+        return $this->crew;
     }
 
-    public function addCompetition(Competitions $competition): static
+    public function setCrew(?Competitions $crew): static
     {
-        if (!$this->competition->contains($competition)) {
-            $this->competition->add($competition);
-            $competition->addCrew($this);
-        }
+        $this->crew = $crew;
 
         return $this;
     }
-
-    public function removeCompetition(Competitions $competition): static
-    {
-        if ($this->competition->removeElement($competition)) {
-            $competition->removeCrew($this);
-        }
-
-        return $this;
-    }
-
-
 }
 

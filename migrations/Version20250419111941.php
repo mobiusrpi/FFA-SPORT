@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250417172755 extends AbstractMigration
+final class Version20250419111941 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,10 +21,13 @@ final class Version20250417172755 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            CREATE TABLE typt_competition (id INT AUTO_INCREMENT NOT NULL, type VARCHAR(30) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB
+            ALTER TABLE competitors ADD crew_competitor_id INT DEFAULT NULL
         SQL);
         $this->addSql(<<<'SQL'
-            ALTER TABLE competitions DROP type
+            ALTER TABLE competitors ADD CONSTRAINT FK_2DED50C62D5EC00 FOREIGN KEY (crew_competitor_id) REFERENCES crews (id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_2DED50C62D5EC00 ON competitors (crew_competitor_id)
         SQL);
     }
 
@@ -32,10 +35,13 @@ final class Version20250417172755 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            DROP TABLE typt_competition
+            ALTER TABLE competitors DROP FOREIGN KEY FK_2DED50C62D5EC00
         SQL);
         $this->addSql(<<<'SQL'
-            ALTER TABLE competitions ADD type VARCHAR(20) NOT NULL
+            DROP INDEX IDX_2DED50C62D5EC00 ON competitors
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE competitors DROP crew_competitor_id
         SQL);
     }
 }

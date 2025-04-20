@@ -7,7 +7,7 @@ namespace App\Entity\Enum;
 
 enum Category: string 
 {
-    case Elite = 'Elite'; 
-    case Honneur = 'Honneur'; 
+    case Elite = 'Elites'; 
+    case Honneur = 'Honneurs'; 
     case Découverte = 'Découverte'; 
 };

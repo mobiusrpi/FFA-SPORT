@@ -4,8 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Competitions;
 use App\Form\CompetitionsType;
-use App\Entity\RegistrationCompetition;
+use App\Form\RegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\CompetitionsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,13 +20,10 @@ final class CompetitionsController extends AbstractController
     #[Route(path: '/competitions', name: 'competitions.list', methods:['GET'])]
     public function list(
         CompetitionsRepository $repository, 
-        PaginatorInterface $paginator,           
-        EntityManagerInterface $manager,
-        Request $request
     ): Response 
     {
         $sortList = $repository->getQueryCompetitionSorted();
-
+//        dd($sortList);
         return $this->render('pages/competitions/list.html.twig', [
             'competition_list' => $sortList,            
         ]);
@@ -34,9 +32,6 @@ final class CompetitionsController extends AbstractController
     #[Route(path: '/admin/competitions', name: 'admin.competitions.list', methods:['GET'])]
     public function listAdmin(
         CompetitionsRepository $repository, 
-        PaginatorInterface $paginator,           
-        EntityManagerInterface $manager,
-        Request $request
     ): Response 
     {
         $sortList = $repository->getQueryCompetitionSorted();
@@ -50,8 +45,7 @@ final class CompetitionsController extends AbstractController
     public function new(
         Request $request,
         EntityManagerInterface $manager
-    ) : Response 
-    {
+    ) : Response{
         $competitions = new Competitions();
         $form = $this->createForm(CompetitionsType::class,$competitions);
         
@@ -69,18 +63,19 @@ final class CompetitionsController extends AbstractController
         }            
         
         return $this->render('pages/admin/competitions/new.html.twig', [ 
-            'competition_new' => $form->createView(),
+            'competitions' => $form->createView(),
         ]);
     }
-  
+     
     #[Route(path :'/admin/competitions/edit/{id}', name: 'admin.competitions.edit', methods:['GET','POST'])]
     public function edit(
         Competitions $competitions,
         Request $request,
         EntityManagerInterface $manager
-    ) : Response 
-    {
+    ) : Response{
+
         $form = $this->createForm(CompetitionsType::class,$competitions);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $competitions = $form->getData();;
@@ -94,11 +89,45 @@ final class CompetitionsController extends AbstractController
 
             return $this->redirectToRoute('admin.competitions.list');
         }  
-
         return $this->render('pages/admin/competitions/edit.html.twig', [
-            'competition_edit' => $form->createView()
+            'competitions' => $form->createView()
         ]);
     }
+
+    #[Route(path :'/competitions/registration/{id}', name: 'competitions.registration', methods:['GET','POST'])]
+    public function registration(
+        int $id,
+        Competitions $competitions, 
+        Request $request,
+        ManagerRegistry $doctrine,
+    ) : Response{
+
+//        $crews = new Crews();  
+        $entityManager = $doctrine->getManager('default');          
+        $repository = $entityManager->getRepository(Competitions::class);
+        $competition = $repository->findOneBy(['id' => $id]);
+        $form = $this->createForm(RegistrationType::class,$competitions);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $competitions = $form->getData();;
+            $entityManager->persist($competitions);
+            $entityManager->flush();
+            
+            $this->addFlash(
+              'success',
+              'Compétition modifiée avec succès !'
+            ); 
+
+            return $this->redirectToRoute('admin.competitions.list');
+        }  
+
+        return $this->render('pages/competitions/registration.html.twig', [
+            'competition_reg' => $form->createView(),
+            'compet' => $competition
+        ]);
+    }
+ 
     
     #[Route(path :'/admin/competitions/delete/{id}', name: 'admin.competitions.delete', methods:['GET','POST'])] 
     public function delete(

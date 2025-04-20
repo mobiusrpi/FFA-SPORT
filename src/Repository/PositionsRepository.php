@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\TypeCompetition;
+use App\Entity\Positions;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<TypeCompetition>
+ * @extends ServiceEntityRepository<Position>
  */
-class TypeCompetitionRepository extends ServiceEntityRepository
+class PositionsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TypeCompetition::class);
+        parent::__construct($registry, Positions::class);
     }
 
     //    /**
-    //     * @return TypeCompetition[] Returns an array of TypeCompetition objects
+    //     * @return Position[] Returns an array of Position objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
+    //            ->orderBy('p.id', 'ASC')
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?TypeCompetition
+    //    public function findOneBySomeField($value): ?Position
     //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()

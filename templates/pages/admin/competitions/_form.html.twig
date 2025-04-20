@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <h4 class= "fw-bold mx-auto" style="width: 400px">{{ title }} </h4> 
+  <div class 'container'>
+    {% for message in app.flashes('success') %}
+      <div class="alert alert-success mt-4">
+        {{ message }}
+      </div>
+    {% endfor %}
+
+    <div class="mx-auto" style="width: 400px;">
+        {{ form_start(competitions) }}
+            <div class="form-group">
+                {{ form_label(competitions.name) }}
+                {{ form_widget(competitions.name) }}               
+                <div class='form-error'>
+                   {{ form_errors(competitions.name) }}
+            </div>  
+            <div class="form-group">
+                {{ form_label(competitions.typecompetition) }}
+                {{ form_widget(competitions.typecompetition) }}
+                <div class='form-error'>
+                    {{ form_errors(competitions.typecompetition) }}
+            </div>  
+
+            <div class="form-group">
+                {{ form_label(competitions.location) }}
+                {{ form_widget(competitions.location) }}
+                <div class='form-error'>
+                    {{ form_errors(competitions.location) }}
+            </div>
+           
+            <div class="form-group">
+                {{ form_label(competitions.startRegistration) }}
+                {{ form_widget(competitions.startRegistration) }}
+                <div class='form-error'>
+                    {{ form_errors(competitions.startRegistration) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(competitions.endRegistration ) }}
+                {{ form_widget(competitions.endRegistration) }}
+                <div class='form-error'>
+                    {{ form_errors(competitions.endRegistration) }}
+            </div> 	
+
+            <div class="form-group">
+                {{ form_label(competitions.startDate) }}
+                {{ form_widget(competitions.startDate) }}
+                <div class='form-error'>
+                    {{ form_errors(competitions.startDate) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(competitions.endDate) }}
+                {{ form_widget(competitions.endDate) }}
+                <div class='form-error'>
+                    {{ form_errors(competitions.endDate) }}
+            </div> 		    	    
+
+            {{ form_row(competitions._token) }}
+
+            <div class="form-group">
+                {{ form_row(competitions.submit) }}
+            </div>
+        
+        {{ form_end(competitions) }}   
+    </div>
+  </div
+{% endblock %}
