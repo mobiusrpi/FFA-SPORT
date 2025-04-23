@@ -36,7 +36,7 @@ class Competitions
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'relationtype')]
+    #[ORM\ManyToOne(inversedBy: 'linktype')]
     #[ORM\JoinColumn(nullable: false)]
     private ?TypeCompetition $typecompetition = null;
 
@@ -44,12 +44,12 @@ class Competitions
      * @var Collection<int, Crews>
      */
     #[ORM\OneToMany(targetEntity: Crews::class, mappedBy: 'competition')]
-    private Collection $relationcrew;
+    private Collection $linkcrew;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->relationcrew = new ArrayCollection();
+        $this->linkcrew = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,30 +156,35 @@ class Competitions
     /**
      * @return Collection<int, Crews>
      */
-    public function getRelationcrew(): Collection
+    public function getLinkcrew(): Collection
     {
-        return $this->relationcrew;
+        return $this->linkcrew;
     }
 
-    public function addRelationcrew(Crews $relationcrew): static
+    public function addLinkcrew(Crews $linkcrew): static
     {
-        if (!$this->relationcrew->contains($relationcrew)) {
-            $this->relationcrew->add($relationcrew);
-            $relationcrew->setCompetition($this);
+        if (!$this->linkcrew->contains($linkcrew)) {
+            $this->linkcrew->add($linkcrew);
+            $linkcrew->setCompetition($this);
         }
 
         return $this;
     }
 
-    public function removeRelationcrew(Crews $relationcrew): static
+    public function removeLinkcrew(Crews $linkcrew): static
     {
-        if ($this->relationcrew->removeElement($relationcrew)) {
+        if ($this->linkcrew->removeElement($linkcrew)) {
             // set the owning side to null (unless already changed)
-            if ($relationcrew->getCompetition() === $this) {
-                $relationcrew->setCompetition(null);
+            if ($linkcrew->getCompetition() === $this) {
+                $linkcrew->setCompetition(null);
             }
         }
 
         return $this;
+    }    
+    
+    public function __toString(): string
+    {
+       return 'test';
     }
 }

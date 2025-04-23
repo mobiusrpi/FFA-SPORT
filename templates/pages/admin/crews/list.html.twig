@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des concurrents{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h3 class='fw-bold'>Liste des concurrents</h3>
+
+        {% for message in app.flashes('success') %}
+          <div class="alert alert-success mt-4">
+            {{message}}
+          </div> 
+        {% endfor %}   
+
+        <table class="table table-light table-striped w-auto">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Category</th>
+                    <th>Callsign</th>
+                    <th>AircraftSpeed</th>
+                    <th>AircraftType</th>
+                    <th>AircraftFlyingclub</th>
+                    <th>AircraftSharing</th>
+                    <th>PilotShared</th>
+                    <th>Payment</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for crew in crews %}
+                <tr>
+                    <td>{{ crew.id }}</td>
+                    <td>{{ crew.category.value|default('undefined') }}</td>
+                    <td>{{ crew.callsign }}</td>
+                    <td>{{ crew.aircraftSpeed.value|default('undefined') }}</td>
+                    <td>{{ crew.aircraftType }}</td>
+                    <td>{{ crew.aircraftFlyingclub }}</td>
+                    <td>{{ crew.aircraftSharing ? 'Yes' : 'No' }}</td>
+                    <td>{{ crew.pilotShared }}</td>
+                    <td>{{ crew.payment }}</td>
+                    <td>
+                        <a href="{{ path('crews.edit', {'id': crew.id}) }}" class= 'btn btn-success btn-sm'>Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">Pas d'enregistrement</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{{ path('crews.new') }}">Nouveau comcurrent</a>
+{% endblock %}

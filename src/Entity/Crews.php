@@ -7,10 +7,12 @@ use App\Entity\Enum\SpeedList;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CrewsRepository;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CrewsRepository::class)]
+#[UniqueEntity('pilot')]
+#[UniqueEntity('navigator')]
 class Crews
 {
     #[ORM\Id]
@@ -18,13 +20,16 @@ class Crews
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(enumType: Category::class)]
+    #[ORM\Column(enumType: Category::class, nullable: true)]
+    #[Assert\NotBlank()]
     private ?Category $category = null;
 
-    #[ORM\Column(length: 8)]
+    #[ORM\Column(length: 8, nullable: true)]    
+    #[Assert\NotBlank()]
     private ?string $callsign = null;
 
-    #[ORM\Column(enumType: SpeedList::class)]
+    #[ORM\Column(enumType: SpeedList::class, nullable: true)]
+    #[Assert\NotBlank()]
     private ?SpeedList $aircraftSpeed = null;
 
     #[ORM\Column(length: 20, nullable: true)]
@@ -33,7 +38,7 @@ class Crews
     #[ORM\Column(length: 30, nullable: true)]
     private ?string $aircraftFlyingclub = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $aircraftSharing = null;
 
     #[ORM\Column(length: 30, nullable: true)]
@@ -42,19 +47,16 @@ class Crews
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $payment = null;
 
-    #[ORM\ManyToOne(inversedBy: 'relationcrew')]
+    #[ORM\ManyToOne(inversedBy: 'linkcrew')]    
+    #[Assert\NotBlank()]
     private ?Competitions $competition = null;
 
-     /**
-     * @var Collection<int, Competitors>
-     */
-    #[ORM\OneToMany(targetEntity: Competitors::class, mappedBy: 'crew')]
-    private Collection $competitor;
+    #[ORM\ManyToOne(inversedBy: 'linkpilot')]    
+    #[Assert\NotBlank()]
+    private ?Competitors $pilot = null;
 
-    public function __construct()
-    {
-        $this->competitor = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'linknavigation')]
+    private ?Competitors $navigator = null;
 
     public function getId(): ?int
     {
@@ -169,34 +171,33 @@ class Crews
         return $this;
     }
 
-     /**
-     * @return Collection<int, Competitors>
-     */
-    public function getCompetitor(): Collection
+    public function getPilot(): ?Competitors
     {
-        return $this->competitor;
+        return $this->pilot;
     }
 
-    public function addCompetitor(Competitors $competitor): static
+    public function setPilot(?Competitors $pilot): static
     {
-        if (!$this->competitor->contains($competitor)) {
-            $this->competitor->add($competitor);
-            $competitor->setCrew($this);
-        }
+        $this->pilot = $pilot;
 
         return $this;
     }
 
-    public function removeCompetitor(Competitors $competitor): static
+    public function getNavigator(): ?Competitors
     {
-        if ($this->competitor->removeElement($competitor)) {
-            // set the owning side to null (unless already changed)
-            if ($competitor->getCrew() === $this) {
-                $competitor->setCrew(null);
-            }
-        }
+        return $this->navigator;
+    }
+
+    public function setNavigator(?Competitors $navigator): static
+    {
+        $this->navigator = $navigator;
 
         return $this;
+    }  
+    
+    public function __toString(): string
+    {
+       return 'test';
     }
 }
 

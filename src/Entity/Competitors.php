@@ -6,9 +6,14 @@ use App\Entity\Enum\CRAList;
 use App\Entity\Enum\Gender;
 use App\Entity\Enum\Polosize;
 use App\Repository\CompetitorsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompetitorsRepository::class)]
+#[UniqueEntity('ffaLicence')]
 class Competitors
 {
     #[ORM\Id]
@@ -17,21 +22,26 @@ class Competitors
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+    #[Assert\NotBlank()]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 30)]
+    #[Assert\NotBlank()]
     private ?string $firstname = null;
 
-    #[ORM\Column(length: 15, unique: true)]
+    #[ORM\Column(length: 15, unique: true)] 
+    #[Assert\NotBlank()]
     private ?string $ffaLicence = null;
 
-    #[ORM\Column]
+    #[ORM\Column]    
+    #[Assert\NotBlank()]
     private ?\DateTimeImmutable $dateBirth = null;
 
     #[ORM\Column(length: 30, nullable: true)]
     private ?string $flyingclub = null;
 
     #[ORM\Column(length: 128)]
+    #[Assert\NotBlank()]
     private ?string $email = null;
 
     #[ORM\Column(length: 30, nullable: true)]
@@ -40,18 +50,29 @@ class Competitors
     #[ORM\Column(nullable: true, enumType: Gender::class)]
     private ?Gender $gender = null;
 
-    #[ORM\Column(enumType: CRAList::class)]
+    #[ORM\Column(nullable: true,enumType: CRAList::class)]
     private ?CRAList $committee = null;
 
     #[ORM\Column(nullable: true, enumType: Polosize::class)]
     private ?Polosize $poloSize = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Positions $competitorPosition = null;
+    /**
+     * @var Collection<int, Crews>
+     */
+    #[ORM\OneToMany(targetEntity: Crews::class, mappedBy: 'pilot')]
+    private Collection $linkpilot;
 
-    #[ORM\ManyToOne(inversedBy: 'competitor')]
-    private ?Crews $crew = null;
+    /**
+     * @var Collection<int, Crews>
+     */
+    #[ORM\OneToMany(targetEntity: Crews::class, mappedBy: 'navigator')]
+    private Collection $linknavigation;
+
+    public function __construct()
+    {
+        $this->linkpilot = new ArrayCollection();
+        $this->linknavigation = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -63,7 +84,7 @@ class Competitors
         return $this->lastname;
     }
 
-    public function setLasrname(string $lastname): static
+    public function setLastname(string $lastname): static
     {
         $this->lastname = $lastname;
 
@@ -82,6 +103,10 @@ class Competitors
         return $this;
     }
 
+    public function getFullName(){
+        return $this->lastname.' '.$this->firstname.' ('.$this->ffaLicence.')';
+    }
+    
     public function getFfaLicence(): ?string
     {
         return $this->ffaLicence;
@@ -178,27 +203,68 @@ class Competitors
         return $this;
     }
 
-    public function getCompetitorPosition(): ?Positions
+    /**
+     * @return Collection<int, Crews>
+     */
+    public function getLinkpilot(): Collection
     {
-        return $this->competitorPosition;
+        return $this->linkpilot;
     }
 
-    public function setCompetitorPosition(?Positions $competitorPosition): static
+    public function addLinkpilot(Crews $linkpilot): static
     {
-        $this->competitorPosition = $competitorPosition;
+        if (!$this->linkpilot->contains($linkpilot)) {
+            $this->linkpilot->add($linkpilot);
+            $linkpilot->setPilot($this);
+        }
 
         return $this;
     }
 
-    public function getCrew(): ?Crews
+    public function removeLinkpilot(Crews $linkpilot): static
     {
-        return $this->crew;
-    }
-
-    public function setCrew(?Crews $crew): static
-    {
-        $this->crew = $crew;
+        if ($this->linkpilot->removeElement($linkpilot)) {
+            // set the owning side to null (unless already changed)
+            if ($linkpilot->getPilot() === $this) {
+                $linkpilot->setPilot(null);
+            }
+        }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Crews>
+     */
+    public function getLinknavigation(): Collection
+    {
+        return $this->linknavigation;
+    }
+
+    public function addLinknavigation(Crews $linknavigation): static
+    {
+        if (!$this->linknavigation->contains($linknavigation)) {
+            $this->linknavigation->add($linknavigation);
+            $linknavigation->setNavigator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLinknavigation(Crews $linknavigation): static
+    {
+        if ($this->linknavigation->removeElement($linknavigation)) {
+            // set the owning side to null (unless already changed)
+            if ($linknavigation->getNavigator() === $this) {
+                $linknavigation->setNavigator(null);
+            }
+        }
+
+        return $this;
+    }    
+    
+    public function __toString(): string
+    {
+       return 'test';
     }
 }

@@ -22,11 +22,11 @@ class TypeCompetition
      * @var Collection<int, Competitions>
      */
     #[ORM\OneToMany(targetEntity: Competitions::class, mappedBy: 'typecompetition')]
-    private Collection $relationtype;
+    private Collection $linktype;
 
     public function __construct()
     {
-        $this->relationtype = new ArrayCollection();
+        $this->linktype = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -49,27 +49,27 @@ class TypeCompetition
     /**
      * @return Collection<int, Competitions>
      */
-    public function getRelationtype(): Collection
+    public function getLinktype(): Collection
     {
-        return $this->relationtype;
+        return $this->linktype;
     }
 
-    public function addRelationtype(Competitions $relationtype): static
+    public function addLinktype(Competitions $linktype): static
     {
-        if (!$this->relationtype->contains($relationtype)) {
-            $this->relationtype->add($relationtype);
-            $relationtype->setTypecompetition($this);
+        if (!$this->linktype->contains($linktype)) {
+            $this->linktype->add($linktype);
+            $linktype->setTypecompetition($this);
         }
 
         return $this;
     }
 
-    public function removeRelationType(Competitions $relationtype): static
+    public function removeLinkType(Competitions $linktype): static
     {
-        if ($this->relationtype->removeElement($relationtype)) {
+        if ($this->linktype->removeElement($linktype)) {
             // set the owning side to null (unless already changed)
-            if ($relationtype->getTypecompetition() === $this) {
-                $relationtype->setTypecompetition(null);
+            if ($linktype->getTypecompetition() === $this) {
+                $linktype->setTypecompetition(null);
             }
         }
 

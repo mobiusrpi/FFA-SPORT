@@ -16,6 +16,15 @@ class CompetitorsRepository extends ServiceEntityRepository
         parent::__construct($registry, Competitors::class);
     }
 
+    public function getQueryCompetitorsData()
+    {    
+        return $this->createQueryBuilder('competitor')            
+            ->leftjoin('competitor.linkpilot', 'pilot')
+            ->getQuery()
+            ->getResult()         
+        ;
+    }
+
     //    /**
     //     * @return Competitors[] Returns an array of Competitors objects
     //     */

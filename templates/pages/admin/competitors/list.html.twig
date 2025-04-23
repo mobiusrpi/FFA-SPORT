@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des competiteurs{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h3 class='fw-bold'>Liste des compétiteurs</h3>
+
+        {% for message in app.flashes('success') %}
+          <div class="alert alert-success mt-4">
+            {{message}}
+          </div> 
+        {% endfor %}   
+
+        <table class="table table-light table-striped w-auto">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>License FFA</th>
+                    <th>Date de naissance</th>
+                    <th>Aéroclub</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Sexe</th>
+                    <th>CRA</th>
+                    <th>Taille polo</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for competitor in competitors %}
+                <tr>
+                    <td>{{ competitor.id }}</td>
+                    <td>{{ competitor.lastname }}</td>
+                    <td>{{ competitor.firstname }}</td>
+                    <td>{{ competitor.ffaLicence }}</td>
+                    <td>{{ competitor.dateBirth ? competitor.dateBirth|date('d-m-y') : '' }}</td>
+                    <td>{{ competitor.flyingclub }}</td>
+                    <td>{{ competitor.email }}</td>
+                    <td>{{ competitor.phone }}</td>
+                    <td>{{ competitor.gender.value|default('undefined') }}</td>
+                    <td>{{ competitor.committee.value|default('undefined') }}</td>
+                    <td>{{ competitor.poloSize.value|default('undefined') }}</td>
+                    <td>
+                        <a href='{{ path('competitors.edit', {'id': competitor.id}) }}' class= 'btn btn-success btn-sm'>Modifier</a>
+                        <a href='{{ path('admin.competitors.delete', {'id': competitor.id}) }}' class= 'btn btn-danger btn-sm'>Supprimer</a>
+                   </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="12">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

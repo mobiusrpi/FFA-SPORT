@@ -61,11 +61,11 @@
 
             {{ form_row(competitions._token) }}
 
-            <div class="form-group">
-                {{ form_row(competitions.submit) }}
-            </div>
-        
+            <button class="btn btn-primary mt-3" {{ button_label|default('Valider') }}></button>                    
+            <a href ="{{ path('admin/competitions.list') }}" class="btn btn-info btn-sm mt-3">
+                Annuler
+            </a>    
         {{ form_end(competitions) }}   
     </div>
   </div
-{% endblock %}
+{% endblock %} 

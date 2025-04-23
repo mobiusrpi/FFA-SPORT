@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Crews;
 use App\Entity\Competitions;
 use App\Entity\TypeCompetition;
 use Symfony\Component\Form\AbstractType;
@@ -35,7 +34,8 @@ class CompetitionsType extends AbstractType
                 'attr' => [
                     'class' => 'form-label mt-4'
                 ],
-                'label' => 'Date de fin d\'épreuve : ',                  'widget' => 'single_text',
+                'label' => 'Date de fin d\'épreuve : ',                
+                'widget' => 'single_text',
             ])
             ->add('startRegistration',DateType::class, [
                 'attr' => [
@@ -57,7 +57,7 @@ class CompetitionsType extends AbstractType
                 ],
                 'label' => 'Lieu de la compétition',   
             ])
-            ->add('competitiontype', EntityType::class, [
+            ->add('typecompetition', EntityType::class, [
                 'class' => TypeCompetition::class,
                 'choice_label' => 'typeComp',
                 'attr' => [
@@ -65,12 +65,6 @@ class CompetitionsType extends AbstractType
                 ],
                 'label' => 'Type de compétition : ',  
             ])
-            ->add('submit', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary mt-4'
-                ],
-                'label' => 'Valider',           
-            ]); 
         ;
     }
 

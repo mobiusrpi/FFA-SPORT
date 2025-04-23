@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau concurent{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h3 class="mx-auto text-center fw-bold" style="width: 400px">Nouveau concurrent</h3>
+
+    {{ include('pages/crews/_form.html.twig') }}
+
+    <a href="{{ path('crews_index') }}">back to list</a>
+    
+{% endblock %}

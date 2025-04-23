@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crews{% endblock %}
+
+{% block body %}
+    <h1>Crews</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ crew.id }}</td>
+            </tr>
+            <tr>
+                <th>Category</th>
+                <td>{{ crew.category }}</td>
+            </tr>
+            <tr>
+                <th>Callsign</th>
+                <td>{{ crew.callsign }}</td>
+            </tr>
+            <tr>
+                <th>AircraftSpeed</th>
+                <td>{{ crew.aircraftSpeed }}</td>
+            </tr>
+            <tr>
+                <th>AircraftType</th>
+                <td>{{ crew.aircraftType }}</td>
+            </tr>
+            <tr>
+                <th>AircraftFlyingclub</th>
+                <td>{{ crew.aircraftFlyingclub }}</td>
+            </tr>
+            <tr>
+                <th>AircraftSharing</th>
+                <td>{{ crew.aircraftSharing ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>PilotShared</th>
+                <td>{{ crew.pilotShared }}</td>
+            </tr>
+            <tr>
+                <th>Payment</th>
+                <td>{{ crew.payment }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="container mt-4">  
+        <a href ="{{ path('admin.crews.list') }}" class="btn btn-primary">
+            Retour à la liste
+        </a>
+    </div>
+    <div class="container mt-4">  
+        <a href="{{ path('crews.edit', { id: crew.id }) }}"
+           class= 'btn btn-success btn-sm'>Editer
+        </a>   
+    </div>
+{% endblock %}

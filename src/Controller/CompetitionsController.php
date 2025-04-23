@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Crews;
 use App\Entity\Competitions;
 use App\Form\CompetitionsType;
-use App\Form\RegistrationType;
+use App\Repository\CrewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\CompetitorsRepository;
 use App\Repository\CompetitionsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,40 +96,24 @@ final class CompetitionsController extends AbstractController
     }
 
     #[Route(path :'/competitions/registration/{id}', name: 'competitions.registration', methods:['GET','POST'])]
-    public function registration(
+    public function registration(  
         int $id,
-        Competitions $competition, 
+        CompetitionsRepository $repositoryCompetitions,         
         Request $request,
-        ManagerRegistry $doctrine,        
-        CompetitionsRepository $repository, 
+        EntityManagerInterface $manager,
+        CompetitorsRepository $repositoryCompetitors, 
+        CrewsRepository $repositoryCrews,    
     ) : Response{
 
-        $entityManager = $doctrine->getManager('default');          
+        $dataEvent = $repositoryCompetitions->getQueryCompetitionData($id);
+        $crew = new Crews();
 
-        $data = $repository->getQueryCompetitionData($id);
-        $form = $this->createForm(RegistrationType::class,$competition);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $competitions = $form->getData();;
-            $entityManager->persist($competitions);
-            $entityManager->flush();
-            
-            $this->addFlash(
-              'success',
-              'Compétition modifiée avec succès !'
-            ); 
-
-            return $this->redirectToRoute('admin.competitions.list');
-        }  
-
-        return $this->render('pages/competitions/registration.html.twig', [
-            'competition_reg' => $form->createView(),
-            'data_compet' => $data
-        ]);
+        $manager->persist($crew);
+        $manager->flush();
+        $id = $crew->getId();
+        return $this->redirectToRoute('crews.registration',array('crewId' => $id,'eventId' => $dataEvent[0]['id']));
     }
  
-    
     #[Route(path :'/admin/competitions/delete/{id}', name: 'admin.competitions.delete', methods:['GET','POST'])] 
     public function delete(
         Competitions $competitions,

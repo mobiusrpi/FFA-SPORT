@@ -34,7 +34,7 @@ class CompetitionsRepository extends ServiceEntityRepository
     public function getQueryCompetitionData($id)
     {    
         return $this->createQueryBuilder('compet')
-            ->select('compet.location','compet.startDate','compet.endDate','typecomp.typecomp',)
+            ->select('compet.id','compet.location','compet.startDate','compet.endDate','typecomp.typecomp',)
             ->leftjoin('compet.typecompetition', 'typecomp')
             ->where('compet.id = :ident')  
             ->setParameter('ident', $id)

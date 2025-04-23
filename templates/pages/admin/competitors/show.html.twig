@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Competitors{% endblock %}
+
+{% block body %}
+    <h1>Competitors</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ competitor.id }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ competitor.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ competitor.firstname }}</td>
+            </tr>
+            <tr>
+                <th>FfaLicence</th>
+                <td>{{ competitor.ffaLicence }}</td>
+            </tr>
+            <tr>
+                <th>DateBirth</th>
+                <td>{{ competitor.dateBirth ? competitor.dateBirth|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Flyingclub</th>
+                <td>{{ competitor.flyingclub }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ competitor.email }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ competitor.phone }}</td>
+            </tr>
+            <tr>
+                <th>Gender</th>
+                <td>{{ competitor.gender }}</td>
+            </tr>
+            <tr>
+                <th>Committee</th>
+                <td>{{ competitor.committee }}</td>
+            </tr>
+            <tr>
+                <th>PoloSize</th>
+                <td>{{ competitor.poloSize }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="container mt-4">  
+        <a href ="{{ path('admin.competitors.list') }}" class='btn btn-primary'>
+            Retour à la liste
+        </a>
+    </div>
+    <div class="container mt-4">  
+        <a href="{{ path('competitors.edit', { id: competitor.id}) }}" 
+           class= 'btn btn-success btn-sm'>Editer
+        </a>   
+    </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification d'un competiteur{% endblock %}
+
+{% block body %}    
+    <div class="container mt-4">
+        <div class="row">
+            <h3 class='fw-bold'>Modification d'un competiteur</h3>
+
+            {{ include('pages/competitors/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+            <div class="container mt-4">  
+                <a href ="{{ path('competitors.list') }}" class="btn btn-primary">
+                    Retour à la liste
+                </a>
+            </div>
+            {{ include('pages/competitors/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

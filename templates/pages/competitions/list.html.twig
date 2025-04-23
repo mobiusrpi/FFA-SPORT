@@ -50,7 +50,7 @@
                   <td>{{ compet.endDate|format_datetime(locale='fr',pattern='dd MMMM') }}</td>
                   {% if is_granted('ROLE_USER') %}   
                       <td>       
-                        <a href='{{ path('competitions.registration', { id: compet.id}) }}' class= 'btn btn-success btn-sm'>Inscription</a>   
+                        <a href='{{ path('competitions.registration',{'id': compet.id}) }}' class= 'btn btn-success btn-sm'>Inscription</a>   
                       </td>  
                     {% endif %}       
                 </tr>
