@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h3><strong>Liste des compétitions</strong></h3>
+        <h3 class='mx-auto text-center fw-bold'>Liste des compétitions</h3>
 
         {% for message in app.flashes('success') %}
           <div class="alert alert-success mt-4">
@@ -13,7 +13,7 @@
         {% endfor %}
         
         <table class="table table-light table-striped w-auto">
-            <thead>
+            <thead class='table-light'>
               <tr>
                 <th class="text-center" scope="col"></th>
                 <th class="text-center" scope="col"></th>                 
@@ -36,25 +36,44 @@
                   <th class="text-center" scope="col">Actions</th>
                 {% endif %}
               </tr>
-
             </thead>
             <tbody>      
               {% for compet in competition_list %}
-                <tr class='table-primary'>
+                <tr>
                   <th scope="row">{{ compet.name }}</td>
 	                <td>{{ compet.typecompetition.typeComp }}</td> 
                   <td>{{ compet.location }}</td>
-                  <td>{{ compet.startRegistration|date('d-m') }}</td>
-                  <td>{{ compet.endRegistration|date('d-m') }}</td>                   
+                  <td> {{ compet.startRegistration|date('d-m') }}</td>  
+                  {% if compet.endRegistration <= date('now') %}
+                    <td class='text-danger'>{{ compet.endRegistration|date('d-m') }}</td>
+                  {% else %}
+                    <td class='text-dark'>{{ compet.endRegistration|date('d-m') }}</td>
+                  {% endif %}                         
                   <td>{{ compet.startDate|format_datetime(locale='fr',pattern='dd MMMM') }}</td>
                   <td>{{ compet.endDate|format_datetime(locale='fr',pattern='dd MMMM') }}</td>
                   {% if is_granted('ROLE_USER') %}   
+                    {% if compet.startRegistration <= date('now') and
+                       date('now') <= compet.endRegistration %}
                       <td>       
-                        <a href='{{ path('competitions.registration',{'id': compet.id}) }}' class= 'btn btn-success btn-sm'>Inscription</a>   
-                      </td>  
-                    {% endif %}       
+                        <a href='{{ path('crews.registration',{'eventId': compet.id}) }}' 
+                          class= 'btn btn-outline-success btn-sm'>Inscription</a>   
+                      </td> 
+                    {% else %}
+                      {% if compet.endRegistration <= date('now') %}       
+                        <td>       
+                          <a href='{{ path('competitions.registration',{'id': compet.id}) }}' 
+                            class= 'btn btn-outline-info btn-sm disabled'>Hors délai</a>   
+                        </td> 
+                      {% else %}
+                        <td>       
+                          <a href='{{ path('competitions.registration',{'id': compet.id}) }}' 
+                            class= 'btn btn-outline-danger btn-sm disabled'>En attente</a>   
+                        </td> 
+                      {% endif %} 
+                    {% endif %} 
+                  {% endif %}       
                 </tr>
-              {% endfor %}
+              {% endfor %} 
             </tbody>
         </table>
     </div>       

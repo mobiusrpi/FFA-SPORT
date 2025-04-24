@@ -15,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class CrewsType extends AbstractType
@@ -74,13 +75,14 @@ class CrewsType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label'
                 ],               
-                'placeholder'=>'Selectionner une catégorie'
+//                'placeholder'=>'Selectionner une catégorie'
             ])
             ->add('callsign',TextType::class,[
                 'attr' => [
                     'class' => 'form-control',                    
                     'maxlength' => '8'
-                ],
+                ],                
+                'required' => false,
                 'label' => 'Immatriculation',
                 'label_attr' => [
                     'class' => 'form-label'
@@ -148,7 +150,14 @@ class CrewsType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label'
                 ],
-            ])         
+            ])      
+            ->add('submit', SubmitType::class, [             
+                'attr' => [
+                    'class' => 'btn btn-primary mt-4'              
+                ],  
+                'label' => 'Valider', 
+            ])
+
         ;
     }
 

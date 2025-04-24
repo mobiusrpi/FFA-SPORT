@@ -10,8 +10,9 @@
             {{ include('pages/competitors/_form.html.twig', {'button_label': 'Modifier'}) }}
 
             <div class="container mt-4">  
+                <input class="btn btn-primary" type="submit" value="Valider">   
                 <a href ="{{ path('competitors.list') }}" class="btn btn-primary">
-                    Retour à la liste
+                    Annuler
                 </a>
             </div>
             {{ include('pages/competitors/_delete_form.html.twig') }}

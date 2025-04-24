@@ -22,22 +22,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
         ]);
     }
 
-    #[Route('/competitors/new/{id}/{origin}', name: 'competitors.new', methods: ['GET', 'POST'])]
+    #[Route('/competitors/new/{origin}', name: 'competitors.new', methods: ['GET', 'POST'])]
     public function new( 
             $origin,
             Request $request,        
             EntityManagerInterface $entityManager
         ): Response{
+
         $competitor = new Competitors();
         $form = $this->createForm(CompetitorsType::class, $competitor);
         $form->handleRequest($request);
-        
+    dump($origin);         
         if ($form->isSubmitted() && $form->isValid()) {   
 
             $entityManager->persist($competitor);
             $entityManager->flush();
-            
-            return $this->redirectToRoute($origin, [], Response::HTTP_SEE_OTHER);  
+           
+            return $this->redirectToRoute($origin, []);  
         }
 
         return $this->render('pages/competitors/new.html.twig', [

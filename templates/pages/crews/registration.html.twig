@@ -4,29 +4,26 @@
 
 {% block body %}
     <div class 'container mt-4'>
-      <h4 class= "mx-auto text-center fw-bold" style="width: 400px">Inscription</h2>
-
+      <h4 class= "mx-auto text-center fw-bold" style="width: 400px">Inscription</h2>  
       {% for message in app.flashes('success') %}
         <div class="alert alert-success mt-4">
           {{ message }}
         </div>   
       {% endfor %}  
       <div>
-        <p class= 'text-center'>Inscription pour la compétition de <strong> {{ data_event[0].typecomp }}</strong></br>
-        se déroulant à <strong>{{ data_event[0].location }}</strong>
-        du <strong>{{ data_event[0].startDate|format_datetime(locale='fr',pattern='dd MMMM y') }} </strong>
-        au <strong>{{ data_event[0].endDate|format_datetime(locale='fr',pattern='dd MMMM y') }}</strong></p>
+        <p class= 'text-center'>Inscription pour la compétition de <strong> {{ event.typecompetition.typecomp }}</strong></br>
+        se déroulant à <strong>{{ event.location }}</strong>
+        du <strong>{{ event.startDate|format_datetime(locale='fr',pattern='dd MMMM y') }} </strong>
+        au <strong>{{ event.endDate|format_datetime(locale='fr',pattern='dd MMMM y') }}</strong></p>
       </div>
       <div class="mx-auto" style="width: 400px;">
         <div class=""> 
-    {{ dump(app.request.attributes) }}          
+        
           {{ form_start(form) }}
               {{ form_row(form.pilot) }}
-
-                <a href ="{{ path('competitors.new', {'id':1,'origin':app.request.attributes.get('_route')}) }}" class="btn btn-primary">
-                  Nouveau compétiteur
-                </a>
-              
+              <a href ="{{ path('competitors.new', {'origin':app.request.attributes.get('_route')}) }}" class="btn btn-primary">
+                Nouveau compétiteur
+              </a>      
               {{ form_row(form.navigator) }}
               <div class='form-group'>
                 {{ form_row(form.category) }} 
@@ -42,16 +39,17 @@
                 </div>
                 {{ form_row(form.pilotShared) }}              
               </div>                                         
-              {{ form_row(form._token) }}              
+              {{ form_row(form._token) }}    
               <div class="row justify-content-center mt-4">
-                <div class="col-6">             
-                  <a href ="{{ path('competitions.list') }}" class="btn btn-info btn-sm ">
-                    Retour à la liste
+                <div class="col-6 text-center">               
+                  {{ form_row(form.submit) }}             
+                  <a href ="{{ path('competitions.list') }}" class="btn btn-info btn-sm mt-4">
+                    Annuler
                   </a>    
                 </div>   
               </div>
               <div>
-                </br> </br> </br> </br> </br>
+                </br> </br> </br>
               </div>
           {{  form_end(form) }}   
         </div>

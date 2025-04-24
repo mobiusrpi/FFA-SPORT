@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Crews;
 use App\Form\CrewsType;
+use App\Entity\Competitions;
 use App\Repository\CrewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CompetitionsRepository;
@@ -81,38 +82,31 @@ final class CrewsController extends AbstractController
     }
 
 
-    #[Route(path :'/crews/registration/{crewId}/{eventId}', name: 'crews.registration', methods:['GET','POST'])]
+    #[Route(path :'/crews/registration/{eventId}', name: 'crews.registration', methods:['GET','POST'])]
     public function registration(  
-        int $crewId,
-        int $eventId,
+        $eventId,
         CompetitionsRepository $repositoryCompetitions, 
         CrewsRepository $repositoryCrews,              
         Request $request,
         EntityManagerInterface $manager 
     ) : Response{
-        $event = $repositoryCompetitions->getQueryCompetitionData($eventId);        
+        $session = $request->getSession();
+        $event = $session->get('event'); 
+        $crew = new Crews;
         
-        $crew = $repositoryCrews->findOneBy(array('id' => $crewId));       
         $form = $this->createForm(CrewsType::class, $crew);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $crews = $form->getData();       
-            $manager->persist($crews);
+            $manager->persist($crew);
             $manager->flush();
-            
-            $this->addFlash(
-              'success',
-              'Compétition modifiée avec succès !'
-            ); 
 
-            return $this->redirectToRoute('competitions.list');
+            return $this->redirectToRoute('admin.crews.list', [], Response::HTTP_SEE_OTHER);
         }
+
         return $this->render('pages/crews/registration.html.twig', [
-            'data_event' => $event,
-            'crew' => $crewId,
-            'form' => $form,
+            'event' => $event,  
+            'form' => $form,      
         ]);
     }
 }

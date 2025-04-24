@@ -25,7 +25,7 @@ class Crews
     private ?Category $category = null;
 
     #[ORM\Column(length: 8, nullable: true)]    
-    #[Assert\NotBlank()]
+//    #[Assert\NotBlank()]
     private ?string $callsign = null;
 
     #[ORM\Column(enumType: SpeedList::class, nullable: true)]

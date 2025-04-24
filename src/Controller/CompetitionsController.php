@@ -39,7 +39,7 @@ final class CompetitionsController extends AbstractController
 
         return $this->render('pages/admin/competitions/list.html.twig', [
             'competition_list' => $sortList,            
-        ]);
+        ]); 
     }
 
     #[Route(path :'/admin/competitions/new', name: 'admin.competitions.new', methods:['GET','POST'])] 
@@ -95,25 +95,6 @@ final class CompetitionsController extends AbstractController
         ]);
     }
 
-    #[Route(path :'/competitions/registration/{id}', name: 'competitions.registration', methods:['GET','POST'])]
-    public function registration(  
-        int $id,
-        CompetitionsRepository $repositoryCompetitions,         
-        Request $request,
-        EntityManagerInterface $manager,
-        CompetitorsRepository $repositoryCompetitors, 
-        CrewsRepository $repositoryCrews,    
-    ) : Response{
-
-        $dataEvent = $repositoryCompetitions->getQueryCompetitionData($id);
-        $crew = new Crews();
-
-        $manager->persist($crew);
-        $manager->flush();
-        $id = $crew->getId();
-        return $this->redirectToRoute('crews.registration',array('crewId' => $id,'eventId' => $dataEvent[0]['id']));
-    }
- 
     #[Route(path :'/admin/competitions/delete/{id}', name: 'admin.competitions.delete', methods:['GET','POST'])] 
     public function delete(
         Competitions $competitions,
@@ -136,5 +117,22 @@ final class CompetitionsController extends AbstractController
         ); 
     
         return $this->redirectToRoute('admin.competitions.list');
+    }
+
+    #[Route(path :'/competitions/registration/{id}', name: 'competitions.registration', methods:['GET','POST'])]
+    public function registration(  
+        int $id,
+        CompetitionsRepository $repositoryCompetitions,         
+        Request $request,
+        EntityManagerInterface $manager,
+        CompetitorsRepository $repositoryCompetitors, 
+        CrewsRepository $repositoryCrews,    
+    ) : Response{
+        
+        $event = $repositoryCompetitions->find($id);
+        $session = $request->getSession();
+        $session->set('event',$event);
+
+        return $this->redirectToRoute('crews.registration');
     }
 }

@@ -43,14 +43,12 @@
                     {{ form_row(form.committee) }}
                </div>                    
                <div class="col-3">
-                    {{ form_row(form.poloSize) }}
+                    {{ form_row(form.poloSize) }} 
                </div>                          
             </div>
              <div class="row justify-content-center">
                 <div class="col-4">
-                    <a href ="{{ path('crews.edit',{'id': 1}) }}" class="btn btn-info btn-sm mt-3">
-                        Valider 
-                    </a>    
+                    <input class="btn btn-primary" type="submit" value="Valider">       
                     <a href ="{{ path('admin.competitors.list') }}" class="btn btn-info btn-sm mt-3">
                         Annuler
                     </a>    
