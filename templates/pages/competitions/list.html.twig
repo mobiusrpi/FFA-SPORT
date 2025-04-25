@@ -55,18 +55,18 @@
                     {% if compet.startRegistration <= date('now') and
                        date('now') <= compet.endRegistration %}
                       <td>       
-                        <a href='{{ path('crews.registration',{'eventId': compet.id}) }}' 
+                        <a href='{{ path('crews.registration') }}' 
                           class= 'btn btn-outline-success btn-sm'>Inscription</a>   
                       </td> 
                     {% else %}
                       {% if compet.endRegistration <= date('now') %}       
                         <td>       
-                          <a href='{{ path('competitions.registration',{'id': compet.id}) }}' 
+                          <a href='#' 
                             class= 'btn btn-outline-info btn-sm disabled'>Hors délai</a>   
                         </td> 
                       {% else %}
                         <td>       
-                          <a href='{{ path('competitions.registration',{'id': compet.id}) }}' 
+                          <a href='#' 
                             class= 'btn btn-outline-danger btn-sm disabled'>En attente</a>   
                         </td> 
                       {% endif %} 

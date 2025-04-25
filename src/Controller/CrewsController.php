@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Crews;
 use App\Form\CrewsType;
-use App\Entity\Competitions;
 use App\Repository\CrewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CompetitionsRepository;
@@ -64,7 +63,7 @@ final class CrewsController extends AbstractController
             return $this->redirectToRoute('admin.crews_list', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('pages/crews/edit.html.twig', [
+        return $this->render('pages/admin/crews/edit.html.twig', [
             'crew' => $crew,
             'form' => $form,
         ]);
@@ -81,32 +80,9 @@ final class CrewsController extends AbstractController
         return $this->redirectToRoute('admin.competitors.list', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route(path :'/crews/registration', name: 'crews.registration', methods:['GET','POST'])]
+    public function registration( ): Response{
 
-    #[Route(path :'/crews/registration/{eventId}', name: 'crews.registration', methods:['GET','POST'])]
-    public function registration(  
-        $eventId,
-        CompetitionsRepository $repositoryCompetitions, 
-        CrewsRepository $repositoryCrews,              
-        Request $request,
-        EntityManagerInterface $manager 
-    ) : Response{
-        $session = $request->getSession();
-        $event = $session->get('event'); 
-        $crew = new Crews;
-        
-        $form = $this->createForm(CrewsType::class, $crew);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager->persist($crew);
-            $manager->flush();
-
-            return $this->redirectToRoute('admin.crews.list', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('pages/crews/registration.html.twig', [
-            'event' => $event,  
-            'form' => $form,      
-        ]);
+        return $this->render('pages/crews/registration.html.twig');
     }
 }

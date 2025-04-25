@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Crews;
 use App\Entity\Competitions;
 use App\Form\CompetitionsType;
 use App\Repository\CrewsRepository;
@@ -117,22 +116,5 @@ final class CompetitionsController extends AbstractController
         ); 
     
         return $this->redirectToRoute('admin.competitions.list');
-    }
-
-    #[Route(path :'/competitions/registration/{id}', name: 'competitions.registration', methods:['GET','POST'])]
-    public function registration(  
-        int $id,
-        CompetitionsRepository $repositoryCompetitions,         
-        Request $request,
-        EntityManagerInterface $manager,
-        CompetitorsRepository $repositoryCompetitors, 
-        CrewsRepository $repositoryCrews,    
-    ) : Response{
-        
-        $event = $repositoryCompetitions->find($id);
-        $session = $request->getSession();
-        $session->set('event',$event);
-
-        return $this->redirectToRoute('crews.registration');
     }
 }

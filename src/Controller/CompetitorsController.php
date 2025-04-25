@@ -22,7 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
         ]);
     }
 
-    #[Route('/competitors/new/{origin}', name: 'competitors.new', methods: ['GET', 'POST'])]
+    #[Route('/competitors/new', name: 'competitors.new', methods: ['GET', 'POST'])]
     public function new( 
             $origin,
             Request $request,        
@@ -32,7 +32,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
         $competitor = new Competitors();
         $form = $this->createForm(CompetitorsType::class, $competitor);
         $form->handleRequest($request);
-    dump($origin);         
+        
         if ($form->isSubmitted() && $form->isValid()) {   
 
             $entityManager->persist($competitor);
@@ -41,7 +41,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
             return $this->redirectToRoute($origin, []);  
         }
 
-        return $this->render('pages/competitors/new.html.twig', [
+        return $this->render('pages/admin/competitors/new.html.twig', [
             'competitor' => $competitor,
             'form' => $form,
         ]);
@@ -67,7 +67,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
             return $this->redirectToRoute('admin.competitors.list', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('pages/competitors/edit.html.twig', [
+        return $this->render('pages/admin/competitors/edit.html.twig', [
             'competitor' => $competitor,
             'form' => $form,
         ]);
@@ -98,6 +98,31 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
         return $errors;
     }
 
+    #[Route('/competitors/registration/{origin}', name: 'competitors.new', methods: ['GET', 'POST'])]
+    public function registration( 
+            $origin,
+            Request $request,        
+            EntityManagerInterface $entityManager
+        ): Response{
+
+        $competitor = new Competitors();
+        $form = $this->createForm(CompetitorsType::class, $competitor);
+    dump($origin);        
+        $form->handleRequest($request);
+         
+        if ($form->isSubmitted() && $form->isValid()) {   
+
+            $entityManager->persist($competitor);
+            $entityManager->flush();
+           
+            return $this->redirectToRoute($origin, []);  
+        }
+
+        return $this->render('pages/competitors/new.html.twig', [
+            'competitor' => $competitor,
+            'form' => $form,
+        ]);
+    }
 }
 
 

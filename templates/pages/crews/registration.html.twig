@@ -21,7 +21,7 @@
         
           {{ form_start(form) }}
               {{ form_row(form.pilot) }}
-              <a href ="{{ path('competitors.new', {'origin':app.request.attributes.get('_route')}) }}" class="btn btn-primary">
+              <a href ="{{ path('competitors.registration', {'origin':app.request.attributes.get('_route')}) }}" class="btn btn-primary">
                 Nouveau compétiteur
               </a>      
               {{ form_row(form.navigator) }}

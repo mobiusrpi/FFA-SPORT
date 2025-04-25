@@ -7,15 +7,15 @@
         <div class="row">
             <h3 class='fw-bold'>Modification d'un competiteur</h3>
 
-            {{ include('pages/competitors/_form.html.twig', {'button_label': 'Modifier'}) }}
+            {{ include('pages/admin/competitors/_form.html.twig', {'button_label': 'Modifier'}) }}
 
             <div class="container mt-4">  
                 <input class="btn btn-primary" type="submit" value="Valider">   
-                <a href ="{{ path('competitors.list') }}" class="btn btn-primary">
+                <a href ="{{ path('admin/competitors.list') }}" class="btn btn-primary">
                     Annuler
                 </a>
             </div>
-            {{ include('pages/competitors/_delete_form.html.twig') }}
+            {{ include('pages/admin/competitors/_delete_form.html.twig') }}
         </div>
     </div>
 {% endblock %}

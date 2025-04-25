@@ -44,7 +44,7 @@
                     <td>{{ competitor.committee.value|default('undefined') }}</td>
                     <td>{{ competitor.poloSize.value|default('undefined') }}</td>
                     <td>
-                        <a href='{{ path('competitors.edit', {'id': competitor.id}) }}' class= 'btn btn-success btn-sm'>Modifier</a>
+                        <a href='{{ path('admin.competitors.edit', {'id': competitor.id}) }}' class= 'btn btn-success btn-sm'>Modifier</a>
                         <a href='{{ path('admin.competitors.delete', {'id': competitor.id}) }}' class= 'btn btn-danger btn-sm'>Supprimer</a>
                    </td>
                 </tr>
