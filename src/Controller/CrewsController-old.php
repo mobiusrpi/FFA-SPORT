@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Crews;
 use App\Form\CrewsType;
+use App\Entity\Competitions;
 use App\Repository\CrewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CompetitionsRepository;
@@ -15,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class CrewsController extends AbstractController
 {
-    #[Route(path: '/crews/list', name: 'admin.crews.list', methods: ['GET'])]
+    #[Route(path: '/crews', name: 'admin.crews.list', methods: ['GET'])]
     public function list(CrewsRepository $crewsRepository): Response
     {
         return $this->render('pages/admin/crews/list.html.twig', [
@@ -28,7 +29,6 @@ final class CrewsController extends AbstractController
     {
         $crew = new Crews();
         $form = $this->createForm(CrewsType::class, $crew);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -44,7 +44,7 @@ final class CrewsController extends AbstractController
         ]);
     }
 
-    #[Route('/crews/{id}/show', name: 'admin.crew.show', methods: ['GET'])]
+    #[Route('/crews/{id}', name: 'admin.crew.show', methods: ['GET'])]
     public function show(Crews $crew): Response
     {
         return $this->render('pages/admin/crews/show.html.twig', [
@@ -59,19 +59,18 @@ final class CrewsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $entityManager->flush();
 
             return $this->redirectToRoute('admin.crews_list', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('pages/admin/crews/edit.html.twig', [
+        return $this->render('pages/crews/edit.html.twig', [
             'crew' => $crew,
             'form' => $form,
         ]);
     }
 
-    #[Route('/crews/{id}/delete', name: 'admin.crews.delete', methods: ['POST'])]
+    #[Route('/crews/{id}', name: 'admin.crews.delete', methods: ['POST'])]
     public function delete(Request $request, Crews $crew, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$crew->getId(), $request->getPayload()->getString('_token'))) {
@@ -83,26 +82,21 @@ final class CrewsController extends AbstractController
     }
 
     #[Route(path :'/crews/registration', name: 'crews.registration', methods:['GET','POST'])]
-    public function registration(
+    public function registration(               
         Request $request,
-        EntityManagerInterface $entityManager
-     ): Response{
+        EntityManagerInterface $manager 
+    ) : Response{
         $session = $request->getSession();
         $event = $session->get('event'); 
-
+        dd($event);
         $crew = new Crews;
-        $crew->setCompetition($event);              
- //       $event->addLinkcrew($crew);
-        $entityManager->persist($event);      
         
         $form = $this->createForm(CrewsType::class, $crew);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $entityManager->persist($crew);
-            $entityManager->flush();
+            $manager->persist($crew);
+            $manager->flush();
 
             return $this->redirectToRoute('admin.crews.list', [], Response::HTTP_SEE_OTHER);
         }

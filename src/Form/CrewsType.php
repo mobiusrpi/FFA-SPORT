@@ -15,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
@@ -138,17 +139,6 @@ class CrewsType extends AbstractType
                 'label'    => 'Partage de l\'avion',
                 'label_attr' => [
                     'class' => 'form-check-label'
-                ],
-            ])
-            ->add('pilotShared',TextType::class,[
-                'attr' => [
-                    'class' => 'form-control',                    
-                    'maxlength' => '30'
-                ],
-                'required' => false,
-                'label' => 'Pilote qui partage votre avion',
-                'label_attr' => [
-                    'class' => 'form-label'
                 ],
             ])      
             ->add('submit', SubmitType::class, [             

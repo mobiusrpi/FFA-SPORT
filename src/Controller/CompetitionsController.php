@@ -117,4 +117,19 @@ final class CompetitionsController extends AbstractController
     
         return $this->redirectToRoute('admin.competitions.list');
     }
+
+    #[Route(path :'/competitions/registration/{id}', name: 'competitions.registration', methods:['GET','POST'])]
+    public function registration(  
+        int $id,
+        CompetitionsRepository $repository,         
+        Request $request,   
+    ) : Response{
+        
+        $event = $repository->find($id);
+        $session = $request->getSession();
+        $session->set('event',$event);
+
+        return $this->redirectToRoute('crews.registration');
+    }
+
 }

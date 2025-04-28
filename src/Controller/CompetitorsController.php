@@ -47,7 +47,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
         ]);
     }
 
-    #[Route('/competitors/{id}', name: 'admin.competitors.show', methods: ['GET'])]
+    #[Route('/competitors/{id}/show', name: 'admin.competitors.show', methods: ['GET'])]
     public function show(Competitors $competitor): Response
     {
         return $this->render('pages/admin/competitors/show.html.twig', [
@@ -73,7 +73,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
         ]);
     }
 
-    #[Route('/competitors/{id}', name: 'admin.competitors.delete', methods: ['POST'])]
+    #[Route('/competitors/{id}/delete', name: 'admin.competitors.delete', methods: ['POST'])]
     public function delete(Request $request, Competitors $competitor, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$competitor->getId(), $request->getPayload()->getString('_token'))) {
@@ -98,7 +98,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
         return $errors;
     }
 
-    #[Route('/competitors/registration/{origin}', name: 'competitors.new', methods: ['GET', 'POST'])]
+    #[Route('/competitors/registration/{origin}', name: 'competitors.registration', methods: ['GET', 'POST'])]
     public function registration( 
             $origin,
             Request $request,        
@@ -118,8 +118,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
             return $this->redirectToRoute($origin, []);  
         }
 
-        return $this->render('pages/competitors/new.html.twig', [
-            'competitor' => $competitor,
+        return $this->render('pages/competitors/registration.html.twig', [
+            'link_origin' => $origin,
             'form' => $form,
         ]);
     }

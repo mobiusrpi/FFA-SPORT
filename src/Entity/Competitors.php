@@ -66,12 +66,12 @@ class Competitors
      * @var Collection<int, Crews>
      */
     #[ORM\OneToMany(targetEntity: Crews::class, mappedBy: 'navigator')]
-    private Collection $linknavigation;
+    private Collection $linknavigator;
 
     public function __construct()
     {
         $this->linkpilot = new ArrayCollection();
-        $this->linknavigation = new ArrayCollection();
+        $this->linknavigator = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -236,27 +236,27 @@ class Competitors
     /**
      * @return Collection<int, Crews>
      */
-    public function getLinknavigation(): Collection
+    public function getlinknavigator(): Collection
     {
-        return $this->linknavigation;
+        return $this->linknavigator;
     }
 
-    public function addLinknavigation(Crews $linknavigation): static
+    public function addlinknavigator(Crews $linknavigator): static
     {
-        if (!$this->linknavigation->contains($linknavigation)) {
-            $this->linknavigation->add($linknavigation);
-            $linknavigation->setNavigator($this);
+        if (!$this->linknavigator->contains($linknavigator)) {
+            $this->linknavigator->add($linknavigator);
+            $linknavigator->setNavigator($this);
         }
 
         return $this;
     }
 
-    public function removeLinknavigation(Crews $linknavigation): static
+    public function removelinknavigator(Crews $linknavigator): static
     {
-        if ($this->linknavigation->removeElement($linknavigation)) {
+        if ($this->linknavigator->removeElement($linknavigator)) {
             // set the owning side to null (unless already changed)
-            if ($linknavigation->getNavigator() === $this) {
-                $linknavigation->setNavigator(null);
+            if ($linknavigator->getNavigator() === $this) {
+                $linknavigator->setNavigator(null);
             }
         }
 

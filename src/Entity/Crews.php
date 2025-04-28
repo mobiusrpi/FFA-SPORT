@@ -55,7 +55,7 @@ class Crews
     #[Assert\NotBlank()]
     private ?Competitors $pilot = null;
 
-    #[ORM\ManyToOne(inversedBy: 'linknavigation')]
+    #[ORM\ManyToOne(inversedBy: 'linknavigator')]
     private ?Competitors $navigator = null;
 
     public function getId(): ?int
